@@ -1,6 +1,6 @@
 <?php
 
-use function Livewire\Volt\{state, rules, layout};
+use function Livewire\Volt\{state, rules, layout, uses};
 use Mary\Traits\Toast;
 
 uses([Toast::class]);
@@ -48,7 +48,7 @@ $save = function () {
             <div class="space-y-4">
                 {{-- Local 1 --}}
                 <x-mary-card class="bg-base-200 border border-base-300 shadow-md">
-                    <x-mary-list-item class="!p-0">
+                    <x-mary-list-item :item="[]" class="!p-0">
                         <x-slot:avatar>
                             <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                                 <x-mary-icon name="o-building-storefront" class="w-6 h-6" />
@@ -78,7 +78,7 @@ $save = function () {
 
                  {{-- Local 2 --}}
                  <x-mary-card class="bg-base-200 border border-base-300 shadow-md">
-                    <x-mary-list-item class="!p-0">
+                    <x-mary-list-item :item="[]" class="!p-0">
                         <x-slot:avatar>
                             <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                                 <x-mary-icon name="o-building-storefront" class="w-6 h-6" />

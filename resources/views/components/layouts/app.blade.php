@@ -13,7 +13,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen font-sans antialiased bg-[#121212] text-[#E5E5E5] flex flex-col">
+<body class="min-h-screen font-sans antialiased bg-background-main text-text-main flex flex-col">
 
     {{-- 
         DRAWER WRAPPER 
