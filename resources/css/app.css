@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Playfair+Display:wght@400;600;700&display=swap');
+@import "tailwindcss";
+
+@plugin "daisyui" {
+    themes: montecarmelo --default, light, dark;
+}
+
+@source "../../vendor/robsontenorio/mary/src/View/Components/**/*.php";
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../**/*.vue";
+
+@theme montecarmelo {
+    /* Fonts configuration */
+    --font-serif: "Playfair Display", serif;
+    --font-sans: "Lato", sans-serif;
+
+    /* Custom Color Palette for Monte Carmelo (Strict Dark Luxury) */
+    --color-primary: #D4AF37;           /* Dorado metálico */
+    --color-primary-content: #121212;   
+    
+    --color-secondary: #8C1C13;         /* Wine Red */
+    --color-secondary-content: #ffffff;
+
+    --color-accent: #F3F4F6;            
+    --color-accent-content: #1f2937;
+
+    --color-neutral: #1c1917;           
+    --color-neutral-content: #E5E5E5;
+
+    --color-base-100: #121212;          /* Casi negro mate */
+    --color-base-200: #1E1E1E;          /* Surface */
+    --color-base-300: #262626;
+    --color-base-content: #E5E5E5;      /* Gris claro para lectura */
+}
+
+/* Custom UI Patterns */
+@layer components {
+    /* Inputs estilo "sólo línea" */
+    .input-gold {
+        @apply bg-transparent border-0 border-b border-[#D4AF37] rounded-none focus:ring-0 focus:border-[#D4AF37] px-0 placeholder-gray-500 text-[#D4AF37] w-full;
+    }
+
+    /* Botón outline dorado */
+    .btn-gold-outline {
+        @apply btn btn-outline border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black rounded-full uppercase tracking-widest font-serif;
+    }
+
+    /* Legacy patterns kept for compatibility or reference */
+    .input-gold-line {
+        @apply bg-transparent border-0 border-b-2 border-primary rounded-none focus:ring-0 focus:border-white transition-colors placeholder-gray-500 text-base-content;
+    }
+
+    .polaroid {
+        @apply bg-white p-3 shadow-2xl rotate-1 hover:rotate-0 transition-transform duration-500 border border-gray-200;
+    }
+}
