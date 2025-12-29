@@ -1,10 +1,28 @@
 <?php
 
-use function Livewire\Volt\{state};
+use Livewire\Volt\Component;
+use Livewire\Attributes\On;
+use App\Facades\Cart;
 
-state(['cartCount' => 0]);
+new class extends Component {
+    public int $cartCount = 0;
 
-?>
+    public function mount()
+    {
+        $this->cartCount = Cart::count();
+    }
+
+    #[On('update-cart-badge')]
+    public function updateCartCount($count)
+    {
+        $this->cartCount = $count;
+    }
+    
+    public function openCart()
+    {
+        $this->dispatch('toggle-cart');
+    }
+}; ?>
 
 <nav class="absolute top-0 w-full z-50 bg-gradient-to-b from-black/80 to-transparent py-4">
     <div class="container mx-auto px-4 flex justify-between items-center">
@@ -17,7 +35,12 @@ state(['cartCount' => 0]);
             <a href="/" class="text-2xl font-serif font-bold text-primary tracking-widest uppercase">
                 Monte Carmelo
             </a>
-            <div class="w-6"></div> {{-- Spacer to center logo roughly --}}
+            <div class="relative" wire:click="openCart">
+                 @if($cartCount > 0)
+                    <span class="absolute -top-1 -right-1 badge badge-primary badge-xs w-4 h-4 p-0 flex items-center justify-center text-[10px]">{{ $cartCount }}</span> 
+                @endif
+                <x-mary-icon name="o-shopping-bag" class="w-6 h-6 text-white" />
+            </div>
         </div>
 
         {{-- Desktop: Logo Left --}}
@@ -39,8 +62,10 @@ state(['cartCount' => 0]);
         <div class="hidden lg:flex items-center gap-4 text-white">
             <x-mary-button icon="o-magnifying-glass" class="btn-ghost btn-sm btn-circle text-white hover:text-primary" />
             
-             <div class="indicator">
-                <span class="indicator-item badge badge-primary badge-xs mr-2 mt-2">{{ $cartCount }}</span> 
+             <div class="indicator cursor-pointer" wire:click="openCart">
+                @if($cartCount > 0)
+                    <span class="indicator-item badge badge-primary badge-xs mr-2 mt-2">{{ $cartCount }}</span> 
+                @endif
                 <x-mary-button icon="o-shopping-bag" class="btn-ghost btn-sm btn-circle text-white hover:text-primary" />
             </div>
         </div>

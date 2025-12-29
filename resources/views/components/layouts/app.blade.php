@@ -59,6 +59,9 @@
         </div>
     </div>
 
+    {{-- CART DRAWER --}}
+    <livewire:components.cart-drawer />
+
     {{-- TOAST --}}
     <x-mary-toast />
 </body>

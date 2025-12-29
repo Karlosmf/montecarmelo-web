@@ -4,6 +4,7 @@ use function Livewire\Volt\{state, uses, with, layout};
 use App\Models\Product;
 use Mary\Traits\Toast;
 use Illuminate\Database\Eloquent\Builder;
+use App\Facades\Cart;
 
 uses([Toast::class]);
 layout('components.layouts.app');
@@ -12,7 +13,18 @@ state(['search' => '', 'category_filter' => '', 'price_min' => 0, 'price_max' =>
 state(['quantities' => []]);
 
 $add = function ($productId, $unitType) {
-    $qty = $this->quantities[$productId] ?? ($unitType === 'kg' ? 200 : 1);
+    // Determine quantity: use selected/input value or defaults (200g for kg, 1 for unit)
+    $qty = (int) ($this->quantities[$productId] ?? ($unitType === 'kg' ? 200 : 1));
+    
+    // Ensure at least 1 for unit types if input was cleared/empty
+    if ($unitType !== 'kg' && $qty < 1) {
+        $qty = 1;
+    }
+
+    Cart::add($productId, $qty, $unitType);
+    
+    $this->dispatch('cart-updated'); // Update Drawer & Navbar Badge
+
     $product = Product::find($productId);
     $qtyLabel = $unitType === 'kg' ? "{$qty}g" : "{$qty} u.";
     $this->success("{$product->name} ({$qtyLabel}) agregado al pedido.");

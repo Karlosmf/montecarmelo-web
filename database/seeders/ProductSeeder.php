@@ -12,62 +12,121 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        // Prices are stored in cents to avoid floating point errors in calculations.
-        // Example: $15.50 becomes 1550.
+        // Prices are stored in cents.
         
         $products = [
+            // FIAMBRES
             [
-                'name' => 'Salame de Milán',
-                'slug' => 'salame-milan',
-                'description' => 'Salame de grano fino, estacionado 45 días.',
-                'price' => 250000, // $2500.00
+                'name' => 'Salame de Milán Premium',
+                'slug' => 'salame-milan-premium',
+                'description' => 'Salame de grano fino con especias seleccionadas, estacionado 60 días.',
+                'price' => 280000, // $2800/kg
                 'unit_type' => 'kg',
                 'category' => 'Fiambres',
-                'image_path' => 'products/salame-milan.jpg',
+                'image_path' => null,
                 'is_active' => true,
                 'is_featured' => true,
             ],
             [
-                'name' => 'Queso Holanda',
-                'slug' => 'queso-holanda',
-                'description' => 'Queso semiduro de sabor suave y ligeramente picante.',
-                'price' => 180000, // $1800.00
+                'name' => 'Jamón Crudo Serrano',
+                'slug' => 'jamon-crudo-serrano',
+                'description' => 'Curado natural por 12 meses. Sabor intenso y textura suave.',
+                'price' => 450000, // $4500/kg
+                'unit_type' => 'kg',
+                'category' => 'Fiambres',
+                'image_path' => null,
+                'is_active' => true,
+                'is_featured' => true,
+            ],
+            [
+                'name' => 'Bondiola Casera',
+                'slug' => 'bondiola-casera',
+                'description' => 'Bondiola de cerdo condimentada con pimentón ahumado y ajo.',
+                'price' => 320000, // $3200/kg
+                'unit_type' => 'kg',
+                'category' => 'Fiambres',
+                'image_path' => null,
+                'is_active' => true,
+                'is_featured' => false,
+            ],
+             [
+                'name' => 'Mortadela con Pistachos',
+                'slug' => 'mortadela-pistachos',
+                'description' => 'Clásica receta italiana con pistachos enteros y pimienta negra.',
+                'price' => 210000, // $2100/kg
+                'unit_type' => 'kg',
+                'category' => 'Fiambres',
+                'image_path' => null,
+                'is_active' => true,
+                'is_featured' => false,
+            ],
+
+            // QUESOS
+            [
+                'name' => 'Queso Holanda Artesanal',
+                'slug' => 'queso-holanda-artesanal',
+                'description' => 'Queso de pasta semidura, notas a nuez y manteca.',
+                'price' => 220000, // $2200/kg
                 'unit_type' => 'kg',
                 'category' => 'Quesos',
-                'image_path' => 'products/queso-holanda.jpg',
+                'image_path' => null,
+                'is_active' => true,
+                'is_featured' => true,
+            ],
+            [
+                'name' => 'Queso Brie Francés',
+                'slug' => 'queso-brie',
+                'description' => 'Pasta blanda con corteza enmohecida, cremoso y delicado.',
+                'price' => 550000, // $5500/kg
+                'unit_type' => 'kg',
+                'category' => 'Quesos',
+                'image_path' => null,
+                'is_active' => true,
+                'is_featured' => true,
+            ],
+             [
+                'name' => 'Queso Azul Danés',
+                'slug' => 'queso-azul',
+                'description' => 'Sabor picante y salado, ideal para salsas o tablas.',
+                'price' => 420000, // $4200/kg
+                'unit_type' => 'kg',
+                'category' => 'Quesos',
+                'image_path' => null,
+                'is_active' => true,
+                'is_featured' => false,
+            ],
+
+            // BEBIDAS & GOURMET
+            [
+                'name' => 'Malbec Reserva 2020',
+                'slug' => 'malbec-reserva-2020',
+                'description' => 'Vino de autor, criado 12 meses en barrica de roble.',
+                'price' => 850000, // $8500/un
+                'unit_type' => 'unit',
+                'category' => 'Bodega',
+                'image_path' => null,
+                'is_active' => true,
+                'is_featured' => true,
+            ],
+            [
+                'name' => 'Aceite de Oliva Extra Virgen',
+                'slug' => 'aceite-oliva-500',
+                'description' => 'Primera prensada en frío. Acidez menor a 0.3%. Botella 500ml.',
+                'price' => 1200000, // $12000/un
+                'unit_type' => 'unit',
+                'category' => 'Gourmet',
+                'image_path' => null,
                 'is_active' => true,
                 'is_featured' => false,
             ],
             [
-                'name' => 'Vino Tinto Malbec',
-                'slug' => 'vino-tinto-malbec',
-                'description' => 'Vino de cuerpo medio con notas de frutos rojos.',
-                'price' => 450000, // $4500.00
+                'name' => 'Aceitunas Negras Griegas',
+                'slug' => 'aceitunas-negras',
+                'description' => 'Aceitunas secas con hierbas aromáticas. Frasco 300g.',
+                'price' => 450000, // $4500/un
                 'unit_type' => 'unit',
-                'category' => 'Bebidas',
-                'image_path' => 'products/vino-malbec.jpg',
-                'is_active' => true,
-                'is_featured' => true,
-            ],
-            [
-                'name' => 'Tabla de Picada Grande',
-                'slug' => 'tabla-picada-grande',
-                'description' => 'Surtido de fiambres y quesos para 4 personas.',
-                'price' => 1200000, // $12000.00
-                'unit_type' => 'unit',
-                'category' => 'Tablas',
-                'image_path' => 'products/tabla-grande.jpg',
-                'is_active' => true,
-                'is_featured' => true,
-            ],
-            [
-                'name' => 'Aceitunas Verdes',
-                'slug' => 'aceitunas-verdes',
-                'description' => 'Aceitunas verdes en salmuera, calibre grande.',
-                'price' => 80000, // $800.00
-                'unit_type' => 'pack',
                 'category' => 'Conservas',
-                'image_path' => 'products/aceitunas.jpg',
+                'image_path' => null,
                 'is_active' => true,
                 'is_featured' => false,
             ],
