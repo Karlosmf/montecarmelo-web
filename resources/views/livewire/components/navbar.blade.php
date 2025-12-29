@@ -68,6 +68,8 @@ new class extends Component {
                 @endif
                 <x-mary-button icon="o-shopping-bag" class="btn-ghost btn-sm btn-circle text-white hover:text-primary" />
             </div>
+
+            <x-mary-button icon="o-user" link="/admin/dashboard" class="btn-ghost btn-sm btn-circle text-white hover:text-primary" />
         </div>
     </div>
 </nav>

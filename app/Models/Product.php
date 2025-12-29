@@ -15,7 +15,7 @@ class Product extends Model
         'description',
         'price',
         'unit_type',
-        'category',
+        'category_id',
         'image_path',
         'is_active',
         'is_featured',
@@ -26,4 +26,14 @@ class Product extends Model
         'is_featured' => 'boolean',
         'price' => 'integer',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

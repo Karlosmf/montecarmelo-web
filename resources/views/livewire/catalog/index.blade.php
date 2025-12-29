@@ -2,6 +2,7 @@
 
 use function Livewire\Volt\{state, uses, with, layout};
 use App\Models\Product;
+use App\Models\Category;
 use Mary\Traits\Toast;
 use Illuminate\Database\Eloquent\Builder;
 use App\Facades\Cart;
@@ -32,11 +33,12 @@ $add = function ($productId, $unitType) {
 
 with(fn () => [
     'products' => Product::query()
+        ->with('category') // Eager load category
         ->when($this->search, fn (Builder $q) => $q->where('name', 'like', "%{$this->search}%"))
-        ->when($this->category_filter, fn (Builder $q) => $q->where('category', $this->category_filter))
+        ->when($this->category_filter, fn (Builder $q) => $q->where('category_id', $this->category_filter))
         ->orderBy('name')
         ->paginate(10),
-    'categories' => Product::select('category')->distinct()->pluck('category'),
+    'categories' => Category::orderBy('name')->get(), // Fetch actual categories
 ]);
 
 ?>
@@ -59,7 +61,7 @@ with(fn () => [
              <select wire:model.live="category_filter" class="select select-sm select-ghost text-xs uppercase tracking-wide border-b border-primary text-primary rounded-none focus:outline-none w-40 md:w-auto p-0 h-auto py-2">
                 <option value="">Todas las Categorías</option>
                 @foreach($categories as $category)
-                    <option value="{{ $category }}">{{ $category }}</option>
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
              </select>
         </div>
@@ -86,7 +88,7 @@ with(fn () => [
                     order-last
                 ">
                     <span class="text-xs font-bold tracking-[0.3em] text-text-muted uppercase mb-6 block border-l-2 border-primary pl-3">
-                        {{ $product->category }}
+                        {{ $product->category->name ?? 'Sin Categoría' }}
                     </span>
                     
                     <h2 class="font-serif text-4xl lg:text-5xl font-bold text-primary tracking-wide mb-6 leading-tight uppercase">
