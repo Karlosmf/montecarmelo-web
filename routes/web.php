@@ -8,7 +8,7 @@ Volt::route('/products', 'catalog.index');
 Volt::route('/contact', 'contact');
 
 // Admin Routes
-Route::prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Volt::route('/dashboard', 'admin.dashboard')->name('admin.dashboard');
     Volt::route('/users', 'admin.users')->name('admin.users');
     Volt::route('/categories', 'admin.categories')->name('admin.categories');
@@ -17,3 +17,5 @@ Route::prefix('admin')->group(function () {
     Volt::route('/orders', 'admin.orders.index')->name('admin.orders');
     // Future routes will go here
 });
+
+require __DIR__.'/auth.php';

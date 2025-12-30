@@ -172,8 +172,8 @@ class extends Component {
     </x-mary-header>
 
     {{-- FILTERS --}}
-    <div class="flex gap-4 mb-4 items-center">
-        <x-mary-input placeholder="Buscar..." wire:model.live.debounce="search" icon="o-magnifying-glass" class="w-full md:w-1/3" />
+    <div class="flex flex-col md:flex-row gap-4 mb-4 items-center">
+        <x-mary-input placeholder="Buscar..." wire:model.live.debounce="search" icon="o-magnifying-glass" class="w-full md:flex-1" />
         
         <x-mary-select 
             placeholder="Categoría" 
@@ -181,14 +181,14 @@ class extends Component {
             option-value="id"
             option-label="name"
             wire:model.live="categoryFilter" 
-            class="w-full md:w-1/4" 
+            class="w-full md:w-64" 
         />
         
         <x-mary-select 
             placeholder="Estado" 
             :options="[['id' => '1', 'name' => 'Activo'], ['id' => '0', 'name' => 'Inactivo']]" 
             wire:model.live="activeFilter" 
-            class="w-full md:w-1/4" 
+            class="w-full md:w-48" 
         />
     </div>
 
