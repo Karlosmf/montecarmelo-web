@@ -15,6 +15,17 @@
 </head>
 <body class="min-h-screen font-sans antialiased bg-background-main text-text-main flex flex-col">
 
+    {{-- Ambient Atmosphere --}}
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute inset-0 bg-[#0a0a0a]"></div>
+
+        <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-[#D4AF37] rounded-full mix-blend-soft-light filter blur-[100px] opacity-20 animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[35vw] h-[35vw] bg-[#8C1C13] rounded-full mix-blend-soft-light filter blur-[120px] opacity-20"></div>
+        <div class="absolute top-[40%] left-[50%] transform -translate-x-1/2 w-[50vw] h-[50vw] bg-[#1E1E1E] rounded-full mix-blend-overlay filter blur-[150px] opacity-40"></div>
+
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('https://grainy-gradients.vercel.app/noise.svg');"></div>
+    </div>
+
     {{-- 
         DRAWER WRAPPER 
         The drawer wraps the entire page content to allow the sidebar to slide over it on mobile.
