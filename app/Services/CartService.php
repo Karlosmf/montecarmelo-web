@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Product;
+use App\Models\Order;
+use App\Events\OrderCreated;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 
@@ -47,7 +49,7 @@ class CartService
         return collect($cart)->map(function ($item) {
             /** @var Product $product */
             $product = $item['product'];
-            
+
             // Ensure we don't have stale data if possible, but using session obj as requested.
             // We inject the cart-specific details into the product object for the view.
             $product->qty = $item['qty'];
@@ -73,35 +75,62 @@ class CartService
         Session::forget($this->sessionKey);
     }
 
-    public function getWhatsAppLink(): string
+    public function createOrder(array $customerData = []): Order
     {
         $items = $this->getDetails();
-        if ($items->isEmpty()) {
-            return '';
+        $total = $this->total();
+
+        $order = Order::create([
+            'customer_name' => $customerData['name'] ?? 'Guest',
+            'customer_phone' => $customerData['phone'] ?? null,
+            'items' => $items->toArray(),
+            'total' => (int) $total,
+            'status' => 'pending',
+        ]);
+
+        OrderCreated::dispatch($order);
+
+        $this->clear();
+
+        return $order;
+    }
+
+    public function getWhatsAppLink(?Order $order = null): string
+    {
+        if ($order) {
+            $items = collect($order->items);
+            $totalVal = number_format($order->total / 100, 2);
+            $orderId = "#" . str_pad($order->id, 4, '0', STR_PAD_LEFT);
+        } else {
+            // Fallback for direct link without order
+            $items = $this->getDetails();
+            if ($items->isEmpty())
+                return '';
+            $totalVal = number_format($this->total() / 100, 2);
+            $orderId = "N/A";
         }
 
-        $total = number_format($this->total() / 100, 2);
-        
-        $message = "Hola Monte Carmelo, mi pedido:\n";
+        $message = "Hola Monte Carmelo, mi pedido {$orderId}:\n";
 
         foreach ($items as $item) {
-            $qtyDisplay = $item->qty;
-            if ($item->unit_type === 'kg') {
-                $qtyDisplay = $item->qty . 'g';
-            } elseif ($item->unit_type === 'unit') {
-                 $qtyDisplay .= ' un.';
+            // Check if item is array (from order DB) or object (from session cart)
+            $name = is_array($item) ? $item['name'] : $item->name;
+            $qty = is_array($item) ? $item['qty'] : $item->qty;
+            $unit = is_array($item) ? $item['unit_type'] : $item->unit_type;
+
+            $qtyDisplay = $qty;
+            if ($unit === 'kg') {
+                $qtyDisplay = $qty . 'g';
+            } elseif ($unit === 'unit') {
+                $qtyDisplay .= ' un.';
             }
 
-            $message .= "- {$item->name} ({$qtyDisplay})\n";
+            $message .= "- {$name} ({$qtyDisplay})\n";
         }
 
-        $message .= "Total Estimado: \${$total}";
+        $message .= "Total Estimado: \${$totalVal}";
 
-        // Using a generic number or config would be better, hardcoding as per previous context or empty
-        // The prompt says "getWhatsAppLink()", implies returning the string.
-        // Assuming a default number or passed as arg? The prompt doesn't specify arg for this method but previous did.
-        // I'll add an optional argument defaulting to a config or placeholder.
-        $phoneNumber = '5491112345678'; 
+        $phoneNumber = config('montecarmelo.contact.whatsapp_number');
 
         return "https://wa.me/{$phoneNumber}?text=" . urlencode($message);
     }
@@ -116,4 +145,3 @@ class CartService
         return $price * $qty;
     }
 }
-

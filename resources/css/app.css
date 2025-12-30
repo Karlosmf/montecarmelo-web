@@ -18,126 +18,77 @@
     --font-sans: "Lato", sans-serif;
 
     /* Custom Color Palette for Monte Carmelo (SSOT) */
-    --color-primary: #D4AF37;           
+    --color-primary: #D4AF37;
     --color-primary-hover: #B5952F;
-    
+
     --color-background-main: #121212;
     --color-background-card: #1E1E1E;
 
     --color-text-main: #E5E5E5;
     --color-text-muted: #A3A3A3;
-    
+
     /* Mapping specific to DaisyUI/MaryUI expectation if needed, or just standard */
     --color-base-100: #121212;
     --color-base-200: #1E1E1E;
     --color-base-content: #E5E5E5;
-    
+
     --color-primary-content: #121212;
 }
 
 /* Custom UI Patterns from JSON */
 @layer components {
+
     /* Typography Helpers */
     .h1-hero {
-        @apply font-serif text-5xl md:text-7xl font-bold uppercase tracking-widest text-primary;
+        @apply font-serif text-5xl md:text-7xl font-bold uppercase tracking-widest text-[#D4AF37] mb-6;
     }
+
     .h2-section {
-        @apply font-serif text-3xl md:text-4xl uppercase tracking-[0.2em] text-primary mb-6;
+        @apply font-serif text-3xl md:text-4xl uppercase tracking-[0.3em] text-[#D4AF37] mb-8 font-bold;
     }
+
     .h3-product {
-        @apply font-serif text-2xl uppercase tracking-wider text-primary;
+        @apply font-serif text-2xl uppercase tracking-[0.2em] text-[#D4AF37] mb-4;
     }
+
     .body-text {
-        @apply font-sans text-base md:text-lg font-light leading-relaxed text-text-main;
-    }
-    .nav-link {
-        @apply font-sans text-xs uppercase tracking-[0.15em] hover:text-primary transition-colors text-text-main;
+        @apply font-sans text-base md:text-lg font-light leading-relaxed text-[#A3A3A3];
+        /* Grayish text */
     }
 
     /* UI Components */
-    .glass-dark {
-        @apply bg-[#121212]/70 backdrop-blur-xl border border-white/5 shadow-2xl;
-    }
-    
-    /* Vidrio Premium: Úsalo en Cards y Paneles */
     .glass-panel {
-        @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.05] shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
+        @apply bg-[#1E1E1E]/50 backdrop-blur-sm border border-[#D4AF37]/10;
     }
 
-    .card-modern {
-        @apply relative overflow-hidden rounded-xl bg-[#1E1E1E]/40 backdrop-blur-md border border-white/5 transition-all duration-300 ease-out;
-    }
-    .card-modern:hover {
-        @apply transform -translate-y-1 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.7)] border-[#D4AF37]/30;
-    }
-    /* Efecto de brillo dorado sutil al hacer hover */
-    .card-modern:hover::after {
-        content: '';
-        @apply absolute inset-0 bg-gradient-to-tr from-[#D4AF37]/5 to-transparent opacity-100 transition-opacity duration-300 pointer-events-none;
-    }
-
-    .text-gradient-gold {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB];
-    }
-
-    /* Texto Dorado Metálico */
-    .text-gold-gradient {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] bg-[length:200%_auto] animate-shine;
-    }
-
-    .heading-modern {
-        @apply font-serif uppercase tracking-widest text-[#D4AF37] font-bold drop-shadow-sm;
-    }
-
-    .table-glass {
-        @apply w-full border-collapse;
-    }
-    .table-glass thead tr {
-        @apply bg-white/5 text-[#D4AF37] font-serif uppercase text-xs tracking-wider border-b border-white/10;
-    }
-    .table-glass tbody tr {
-        @apply border-b border-white/5 transition-colors hover:bg-white/5;
-    }
-
-    /* Botón Luxury */
-    .btn-luxury {
-        @apply relative overflow-hidden px-8 py-3 bg-transparent border border-[#D4AF37]/50 text-[#D4AF37] font-serif uppercase tracking-widest transition-all duration-500 text-center;
-    }
-    .btn-luxury:hover {
-        @apply border-[#D4AF37] text-[#0a0a0a] bg-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.4)];
-    }
-
-    .btn-primary-outline {
-        @apply btn btn-outline border-primary text-primary hover:bg-primary hover:text-[#121212] rounded-full uppercase tracking-widest px-8 font-serif text-sm;
-    }
-
+    /* Input Minimalista (Solo borde abajo) */
     .input-gold-line {
-        @apply bg-transparent border-b border-[#D4AF37]/40 focus:border-[#D4AF37] px-0 py-2 text-[#E5E5E5] placeholder-[#525252] outline-none w-full transition-all rounded-none;
+        @apply bg-transparent border-b border-[#D4AF37]/30 text-[#E5E5E5] px-0 py-4 focus:border-[#D4AF37] focus:ring-0 outline-none w-full transition-all duration-300 placeholder-[#525252] font-sans text-sm tracking-wide;
     }
 
-    /* Input Minimalista Moderno */
-    .input-modern {
-        @apply bg-transparent border-b border-white/20 text-[#E5E5E5] px-0 py-3 focus:border-[#D4AF37] focus:ring-0 transition-all duration-300 placeholder:text-white/20 outline-none w-full;
+    /* Botón Luxury: Borde fino, texto separado */
+    .btn-luxury {
+        @apply inline-block px-10 py-3 bg-transparent border border-[#D4AF37] text-[#D4AF37] font-serif text-xs font-bold uppercase tracking-[0.3em] transition-all duration-300 hover:bg-[#D4AF37] hover:text-[#121212];
     }
 
-    .polaroid-base {
-        @apply bg-white p-3 shadow-2xl transition-transform hover:scale-105 duration-500;
+    /* Icono Decorativo Dorado */
+    .icon-gold {
+        @apply text-[#D4AF37] opacity-80 mb-6;
     }
 
-    .img-product-clean {
-        @apply object-cover w-full h-full rounded-none grayscale-[20%] hover:grayscale-0 transition-all duration-700;
-    }
-
-    /* Animación de Brillo para el texto */
+    /* Animación de Brillo */
     @keyframes shine {
-        to { background-position: 200% center; }
+        to {
+            background-position: 200% center;
+        }
     }
+
     .animate-shine {
         animation: shine 4s linear infinite;
     }
-    
-    /* Animación lenta para los blobs */
-    .animate-pulse-slow {
-        animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+    .text-gold-gradient {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] bg-[length:200%_auto];
+        animation: shine 4s linear infinite;
     }
 }
