@@ -14,14 +14,15 @@
         {{-- Left: Polaroid Stack --}}
         <div class="relative w-64 h-80 mx-auto lg:mx-0 flex-shrink-0">
             {{-- Card 1 (Rotated Left) --}}
-            <div class="polaroid-base rotate-[-6deg] z-10 absolute inset-0">
-                <img src="https://images.unsplash.com/photo-1625938145744-e38051524225?q=80&w=400&h=500&fit=crop"
-                    class="w-full h-full object-cover grayscale-[30%]" alt="Tradición">
+            <div class="polaroid-base animate-scroll-view rotate-[-6deg] z-10 absolute inset-0">
+                <img src="{{ asset('storage/products/salame-picado-grueso.jpg') }}"
+                    class="w-full h-full object-cover grayscale-[30%] rounded-[5px]" alt="Tradición">
             </div>
             {{-- Card 2 (Rotated Right) --}}
-            <div class="polaroid-base rotate-[3deg] z-20 absolute inset-0 translate-x-4 translate-y-4">
-                <img src="https://images.unsplash.com/photo-1596560548464-f010549b84d7?q=80&w=400&h=500&fit=crop"
-                    class="w-full h-full object-cover grayscale-[30%]" alt="Calidad">
+            <div
+                class="polaroid-base animate-scroll-view rotate-[3deg] z-20 absolute inset-0 translate-x-4 translate-y-4">
+                <img src="{{ asset('storage/products/bondiola-feteada.jpg') }}"
+                    class="w-full h-full object-cover grayscale-[30%] rounded-[5px]" alt="Calidad">
             </div>
         </div>
 

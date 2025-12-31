@@ -1,22 +1,20 @@
 <x-mail::message>
-    # Nuevo Pedido #{{ $order->id }}
+    # Nuevo Pedido Recibido
 
-    Hola Admin,
+    Se ha generado una nueva intención de compra en **Monte Carmelo**.
 
-    Has recibido un nuevo pedido a través de la web.
+    **Cliente:** {{ $order->customer_name }}
+    **Teléfono:** {{ $order->customer_phone ?? 'No proporcionado' }}
+    **Total Estimado:** ${{ number_format($order->total / 100, 2) }}
 
-    **Cliente:** {{ $order->customer_name ?? 'Guest' }}
-    **Teléfono:** {{ $order->customer_phone ?? 'N/A' }}
-    **Total:** ${{ number_format($order->total / 100, 2) }}
-
-    ## Detalle del Pedido
-
+    ## Resumen de Productos:
     @foreach($order->items as $item)
-        - **{{ $item['name'] }}**: {{ $item['qty'] }} {{ $item['unit_type'] }}
+        - **{{ $item['name'] }}**
+        ({{ $item['qty'] }}{{ $item['unit_type'] === 'kg' ? 'g' : ($item['unit_type'] === 'unit' ? ' un.' : '') }})
     @endforeach
 
     <x-mail::button :url="url('/admin/orders')">
-        Ver en Panel
+        Ver Detalles en el Panel
     </x-mail::button>
 
     Gracias,<br>

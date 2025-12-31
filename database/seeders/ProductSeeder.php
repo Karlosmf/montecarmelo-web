@@ -7,6 +7,8 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Tag;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
@@ -16,12 +18,21 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
+        // 0. Clean previous data
+        Schema::disableForeignKeyConstraints();
+        Order::truncate();
+        DB::table('product_tag')->truncate();
+        Product::truncate();
+        Tag::truncate();
+        Category::truncate();
+        Schema::enableForeignKeyConstraints();
+
         // 1. Categories
+        // "Asegurarse de que las Categorías Embutidos, Quesos y Picadas existan primero"
         $categoriesData = [
-            ['name' => 'Fiambres', 'slug' => 'fiambres', 'color' => 'bg-red-100 text-red-800'],
+            ['name' => 'Embutidos', 'slug' => 'embutidos', 'color' => 'bg-red-100 text-red-800'],
             ['name' => 'Quesos', 'slug' => 'quesos', 'color' => 'bg-yellow-100 text-yellow-800'],
-            ['name' => 'Bebidas', 'slug' => 'bebidas', 'color' => 'bg-purple-100 text-purple-800'],
-            ['name' => 'Gourmet', 'slug' => 'gourmet', 'color' => 'bg-green-100 text-green-800'],
+            ['name' => 'Picadas', 'slug' => 'picadas', 'color' => 'bg-orange-100 text-orange-800'],
         ];
 
         $categories = collect();
@@ -29,10 +40,8 @@ class ProductSeeder extends Seeder
             $categories->push(Category::create($cat));
         }
 
-        // 2. Tags
+        // 2. Tags (Optional but good to have)
         $tagsData = [
-            ['name' => 'Sin TACC', 'color' => 'bg-orange-500'],
-            ['name' => 'Picante', 'color' => 'bg-red-600'],
             ['name' => 'Premium', 'color' => 'bg-gold-500'],
             ['name' => 'Oferta', 'color' => 'bg-blue-500'],
             ['name' => 'Nuevo', 'color' => 'bg-green-500'],
@@ -45,107 +54,71 @@ class ProductSeeder extends Seeder
 
         // 3. Products
         $products = [
-            // FIAMBRES
+            // Categoría: Embutidos
             [
-                'name' => 'Salame de Milán Premium',
-                'description' => 'Salame de grano fino con especias seleccionadas, estacionado 60 días.',
-                'price' => 280000,
+                'name' => 'Bondiola Feteada al Vacío',
+                'description' => 'Curada pacientemente con especias naturales. Sabor intenso y textura mantecosa que se deshace en el paladar. Ideal para bruschettas.',
+                'price' => 318900,
                 'unit_type' => 'kg',
-                'category_id' => $categories->firstWhere('slug', 'fiambres')->id,
-                'is_featured' => true,
-                'tags' => ['Premium', 'Sin TACC'],
+                'image_path' => 'products/bondiola-feteada.jpg',
+                'category_slug' => 'embutidos',
             ],
             [
-                'name' => 'Jamón Crudo Serrano',
-                'description' => 'Curado natural por 12 meses. Sabor intenso y textura suave.',
-                'price' => 450000,
+                'name' => 'Lomo de Cerdo a las Hierbas',
+                'description' => 'La pieza más noble del cerdo, curada con una selección de hierbas de campo. Magro, suave y aromático.',
+                'price' => 350000,
                 'unit_type' => 'kg',
-                'category_id' => $categories->firstWhere('slug', 'fiambres')->id,
-                'is_featured' => true,
-                'tags' => ['Premium'],
+                'image_path' => 'products/lomo-cerdo.jpg',
+                'category_slug' => 'embutidos',
             ],
             [
-                'name' => 'Mortadela con Pistachos',
-                'description' => 'Clásica receta italiana con pistachos enteros.',
-                'price' => 210000,
+                'name' => 'Jamón Crudo Reserva',
+                'description' => 'Nuestra estrella. Estacionamiento prolongado para lograr el punto justo de sal y dulzura. Feteado con separadores para conservar su frescura.',
+                'price' => 411100,
                 'unit_type' => 'kg',
-                'category_id' => $categories->firstWhere('slug', 'fiambres')->id,
-                'is_featured' => false,
-                'tags' => ['Nuevo'],
-            ],
-
-            // QUESOS
-            [
-                'name' => 'Queso Brie Francés',
-                'description' => 'Pasta blanda con corteza enmohecida, cremoso y delicado.',
-                'price' => 550000,
-                'unit_type' => 'kg',
-                'category_id' => $categories->firstWhere('slug', 'quesos')->id,
-                'is_featured' => true,
-                'tags' => ['Premium'],
+                'image_path' => 'products/jamon-crudo.jpg',
+                'category_slug' => 'embutidos',
             ],
             [
-                'name' => 'Queso Azul Danés',
-                'description' => 'Sabor picante y salado, ideal para salsas o tablas.',
-                'price' => 420000,
-                'unit_type' => 'kg',
-                'category_id' => $categories->firstWhere('slug', 'quesos')->id,
-                'is_featured' => false,
-                'tags' => ['Picante'],
-            ],
-
-            // BEBIDAS
-            [
-                'name' => 'Malbec Reserva 2020',
-                'description' => 'Vino de autor, criado 12 meses en barrica de roble.',
-                'price' => 850000,
+                'name' => 'Salame Picado Grueso (Tipo Casero)',
+                'description' => 'La receta del abuelo. Carne de cerdo seleccionada, tocino en cubos y pimienta en grano. Atado a mano.',
+                'price' => 1800000,
                 'unit_type' => 'unit',
-                'category_id' => $categories->firstWhere('slug', 'bebidas')->id,
-                'is_featured' => true,
-                'tags' => ['Oferta'],
+                'image_path' => 'products/salame-picado-grueso.jpg',
+                'category_slug' => 'embutidos',
             ],
 
-            // GOURMET
+            // Categoría: Quesos (De Terceros)
             [
-                'name' => 'Aceite de Oliva Extra Virgen',
-                'description' => 'Primera prensada en frío. Acidez menor a 0.3%.',
-                'price' => 1200000,
+                'name' => 'Queso Pategrás Selección',
+                'description' => 'Pasta semidura, ojos bien formados y sabor levemente picante. El compañero indiscutido del salame.',
+                'price' => 120000,
+                'unit_type' => 'kg',
+                'image_path' => 'products/queso-pategras.jpg',
+                'category_slug' => 'quesos',
+            ],
+
+            // Categoría: Picadas
+            [
+                'name' => 'Tabla "Monte Carmelo" (4 Personas)',
+                'description' => 'La experiencia completa. Selección de bondiola, jamón crudo, lomo, salame y quesos, acompañados de aceitunas y pan de campo.',
+                'price' => 2500000,
                 'unit_type' => 'unit',
-                'category_id' => $categories->firstWhere('slug', 'gourmet')->id,
-                'is_featured' => false,
-                'tags' => ['Sin TACC', 'Premium'],
+                'image_path' => 'products/picada-premium.jpg',
+                'category_slug' => 'picadas',
             ],
         ];
 
         foreach ($products as $pData) {
-            $tagsToAttach = $pData['tags'] ?? [];
-            unset($pData['tags']);
-            
+            $catSlug = $pData['category_slug'];
+            unset($pData['category_slug']);
+
+            $pData['category_id'] = $categories->firstWhere('slug', $catSlug)->id;
             $pData['slug'] = Str::slug($pData['name']);
             $pData['is_active'] = true;
-            $pData['image_path'] = null; // Placeholder
+            $pData['is_featured'] = str_contains($pData['name'], 'Monte Carmelo') || str_contains($pData['name'], 'Crudo'); // Simple logic to feature some items
 
-            $product = Product::create($pData);
-
-            // Attach tags
-            $tagIds = $tags->whereIn('name', $tagsToAttach)->pluck('id');
-            $product->tags()->attach($tagIds);
-        }
-
-        // 4. Fake Orders (for Stats)
-        $statuses = ['pending', 'contacted', 'completed', 'cancelled'];
-        
-        for ($i = 0; $i < 15; $i++) {
-            Order::create([
-                'customer_name' => 'Cliente ' . ($i + 1),
-                'customer_phone' => '54911' . rand(10000000, 99999999),
-                'total' => rand(500000, 5000000), // $5,000 to $50,000
-                'items' => [
-                    ['name' => 'Producto Random', 'qty' => 1, 'subtotal' => 1000]
-                ],
-                'status' => $statuses[array_rand($statuses)],
-                'created_at' => now()->subDays(rand(0, 30)),
-            ]);
+            Product::create($pData);
         }
     }
 }

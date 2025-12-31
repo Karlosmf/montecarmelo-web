@@ -14,19 +14,31 @@ class CartService
 
     public function add(int $id, int $qty, string $unit): void
     {
-        $cart = Session::get($this->sessionKey, []);
-
-        // Retrieve the product to store in session as requested
-        $product = Product::find($id);
-
-        if (!$product) {
-            return;
+        // Validar cantidad positiva
+        if ($qty <= 0) {
+            throw new \InvalidArgumentException('La cantidad debe ser mayor a cero');
         }
 
+        // Validar tipo de unidad válido
+        if (!in_array($unit, ['kg', 'unit', 'pack'], true)) {
+            throw new \InvalidArgumentException('Tipo de unidad inválido');
+        }
+
+        // Verificar que el producto existe y está activo
+        $product = Product::where('id', $id)
+            ->where('is_active', true)
+            ->first();
+
+        if (!$product) {
+            throw new \Exception('Producto no disponible');
+        }
+
+        $cart = Session::get($this->sessionKey, []);
+
         $cart[$id] = [
+            'id' => $id,
             'qty' => $qty,
             'unit_type' => $unit,
-            'product' => $product,
         ];
 
         Session::put($this->sessionKey, $cart);
@@ -45,24 +57,33 @@ class CartService
     public function getDetails(): Collection
     {
         $cart = Session::get($this->sessionKey, []);
+        $productIds = array_keys($cart);
 
-        return collect($cart)->map(function ($item) {
-            /** @var Product $product */
-            $product = $item['product'];
+        // Eager load relationships to prevent N+1 queries
+        $products = Product::with(['category', 'tags'])
+            ->whereIn('id', $productIds)
+            ->get()
+            ->keyBy('id');
 
-            // Ensure we don't have stale data if possible, but using session obj as requested.
-            // We inject the cart-specific details into the product object for the view.
+        return collect($cart)->map(function ($item) use ($products) {
+            $productId = $item['id'];
+
+            if (!$products->has($productId)) {
+                return null;
+            }
+
+            $product = $products->get($productId);
             $product->qty = $item['qty'];
             $product->unit_type = $item['unit_type'];
             $product->subtotal = $this->calculateSubtotal($product->price, $item['qty'], $item['unit_type']);
 
             return $product;
-        });
+        })->filter();
     }
 
-    public function total(): float
+    public function total(): int
     {
-        return $this->getDetails()->sum('subtotal');
+        return (int) $this->getDetails()->sum('subtotal');
     }
 
     public function count(): int
@@ -80,10 +101,23 @@ class CartService
         $items = $this->getDetails();
         $total = $this->total();
 
+        // Map items to include necessary snapshot data
+        $itemsSnapshot = $items->map(function ($item) {
+            return [
+                'product_id' => $item->id,
+                'category_id' => $item->category_id,
+                'name' => $item->name,
+                'qty' => $item->qty,
+                'unit_type' => $item->unit_type,
+                'price' => $item->price,
+                'subtotal' => $item->subtotal,
+            ];
+        });
+
         $order = Order::create([
             'customer_name' => $customerData['name'] ?? 'Guest',
             'customer_phone' => $customerData['phone'] ?? null,
-            'items' => $items->toArray(),
+            'items' => $itemsSnapshot->toArray(),
             'total' => (int) $total,
             'status' => 'pending',
         ]);

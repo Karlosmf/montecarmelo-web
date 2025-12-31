@@ -3,12 +3,13 @@
 use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
+use Livewire\Attributes\Confirm;
 use App\Models\Tag;
 use Mary\Traits\Toast;
 
-new 
-#[Layout('components.layouts.admin')]
-class extends Component {
+new
+    #[Layout('components.layouts.admin')]
+    class extends Component {
     use Toast;
 
     public $tags = [];
@@ -17,7 +18,7 @@ class extends Component {
 
     #[Rule('required')]
     public string $name = '';
-    
+
     #[Rule('required')]
     public string $color = 'bg-gray-500';
 
@@ -82,6 +83,7 @@ class extends Component {
         $this->refresh();
     }
 
+    #[Confirm('¿Estás seguro de eliminar esta etiqueta?')]
     public function delete($id)
     {
         Tag::destroy($id);
@@ -92,7 +94,7 @@ class extends Component {
 
 <div>
     <x-mary-header title="Etiquetas" subtitle="Gestiona las etiquetas de productos" separator>
-         <x-slot:middle class="!justify-end">
+        <x-slot:middle class="!justify-end">
             <x-mary-button icon="o-plus" class="btn-primary" label="Nueva Etiqueta" wire:click="create" />
         </x-slot:middle>
     </x-mary-header>
@@ -100,27 +102,29 @@ class extends Component {
     <x-mary-card>
         <x-mary-table :rows="$tags" :headers="[['key' => 'id', 'label' => '#'], ['key' => 'name', 'label' => 'Nombre / Color'], ['key' => 'actions', 'label' => 'Acciones']]" striped>
             @scope('name', $tag)
-                <span class="badge text-white border-none {{ $tag->color }}">
-                    {{ $tag->name }}
-                </span>
+            <span class="badge text-white border-none {{ $tag->color }}">
+                {{ $tag->name }}
+            </span>
             @endscope
 
             @scope('actions', $tag)
-                <div class="flex">
-                    <x-mary-button icon="o-pencil" wire:click="edit({{ $tag->id }})" class="btn-ghost btn-sm text-info" />
-                    <x-mary-button icon="o-trash" wire:click="delete({{ $tag->id }})" class="btn-ghost btn-sm text-error" onclick="return confirm('¿Seguro?') || event.stopImmediatePropagation()" />
-                </div>
+            <div class="flex">
+                <x-mary-button icon="o-pencil" wire:click="edit({{ $tag->id }})" class="btn-ghost btn-sm text-info" />
+                <x-mary-button icon="o-trash" wire:click="delete({{ $tag->id }})" class="btn-ghost btn-sm text-error"
+                    onclick="return confirm('¿Seguro?') || event.stopImmediatePropagation()" />
+            </div>
             @endscope
         </x-mary-table>
     </x-mary-card>
 
-    <x-mary-drawer wire:model="drawer" title="{{ $editingId ? 'Editar Etiqueta' : 'Nueva Etiqueta' }}" right class="w-11/12 lg:w-1/3">
+    <x-mary-drawer wire:model="drawer" title="{{ $editingId ? 'Editar Etiqueta' : 'Nueva Etiqueta' }}" right
+        class="w-11/12 lg:w-1/3">
         <x-mary-form wire:submit="save">
             <x-mary-input label="Nombre" wire:model="name" />
-            
+
             <x-mary-select label="Color" icon="o-swatch" :options="$colors" wire:model="color">
                 <x-slot:optiontemplate>
-                     <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2">
                         <div class="w-4 h-4 rounded-full bg-gray-200" :class="$option['id']"></div>
                         <span x-text="$option['name']"></span>
                     </div>

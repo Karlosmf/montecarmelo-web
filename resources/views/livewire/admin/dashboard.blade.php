@@ -8,31 +8,34 @@ use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-new 
-#[Layout('components.layouts.admin')]
-class extends Component {
+new
+    #[Layout('components.layouts.admin')]
+    class extends Component {
     public int $totalOrdersMonth = 0;
     public float $estimatedRevenueMonth = 0;
     public string $topProductName = '-';
-    
+
     // Chart Data
     public array $lineChartLabels = [];
     public array $lineChartData = [];
-    
+
     public array $doughnutLabels = [];
     public array $doughnutData = [];
+    public array $doughnutColors = [];
 
     public function mount()
     {
         // 1. KPIs
         $startOfMonth = now()->startOfMonth();
-        $ordersThisMonth = Order::where('created_at', '>=', $startOfMonth)->get();
-        
-        $this->totalOrdersMonth = $ordersThisMonth->count();
-        $this->estimatedRevenueMonth = $ordersThisMonth->sum('total') / 100;
+
+        $this->totalOrdersMonth = Order::where('created_at', '>=', $startOfMonth)->count();
+        $this->estimatedRevenueMonth = Order::where('created_at', '>=', $startOfMonth)->sum('total') / 100;
 
         // Top Product Logic (Parsing JSON items)
-        $allItemNames = $ordersThisMonth->flatMap(fn($order) => collect($order->items)->pluck('name'));
+        // We use a query to find the top product by name in the items JSON for this month
+        $recentOrders = Order::where('created_at', '>=', $startOfMonth)->get();
+        $allItemNames = $recentOrders->flatMap(fn($order) => collect($order->items)->pluck('name'));
+
         if ($allItemNames->isNotEmpty()) {
             $this->topProductName = $allItemNames->countBy()->sortDesc()->keys()->first();
         }
@@ -60,70 +63,54 @@ class extends Component {
         }
 
         // 3. Doughnut Chart: Revenue by Category (Last 30 days)
-        // Since items are JSON, we need to map names back to products to find categories.
-        // Optimization: Fetch all products with categories first.
-        $productsMap = Product::with('category')->get()->keyBy('name');
-        
+        // Optimization: Use category_id from snapshot and dynamic colors
+        $categories = Category::all()->keyBy('id');
         $categoryRevenue = [];
-        $recentOrders = Order::where('created_at', '>=', $startDate)->get();
+        $categoryColors = [];
 
-        foreach ($recentOrders as $order) {
+        $last30DaysOrders = Order::where('created_at', '>=', $startDate)->get();
+
+        foreach ($last30DaysOrders as $order) {
             foreach ($order->items as $item) {
-                $pName = $item['name'];
-                $subtotal = $item['subtotal'] ?? 0; // Assuming subtotal is in cents
-                
-                if (isset($productsMap[$pName]) && $productsMap[$pName]->category) {
-                    $catName = $productsMap[$pName]->category->name;
-                    if (!isset($categoryRevenue[$catName])) $categoryRevenue[$catName] = 0;
-                    $categoryRevenue[$catName] += $subtotal;
-                } else {
-                    if (!isset($categoryRevenue['Otros'])) $categoryRevenue['Otros'] = 0;
-                    $categoryRevenue['Otros'] += $subtotal;
+                $catId = $item['category_id'] ?? null;
+                $subtotal = $item['subtotal'] ?? 0;
+
+                $catName = $catId && $categories->has($catId) ? $categories->get($catId)->name : 'Otros';
+                $catColor = $catId && $categories->has($catId) ? $categories->get($catId)->color : '#9ca3af';
+
+                if (!isset($categoryRevenue[$catName])) {
+                    $categoryRevenue[$catName] = 0;
+                    $categoryColors[] = $catColor;
                 }
+                $categoryRevenue[$catName] += $subtotal;
             }
         }
-        
+
         $this->doughnutLabels = array_keys($categoryRevenue);
-        // Convert to float currency
         $this->doughnutData = array_map(fn($val) => round($val / 100, 2), array_values($categoryRevenue));
+        $this->doughnutColors = $categoryColors;
     }
 }; ?>
 
 <div class="space-y-8">
     {{-- HEADER --}}
     <x-mary-header title="Dashboard" subtitle="Resumen ejecutivo del último mes" separator />
-    
+
     {{-- KPIs --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <x-mary-stat 
-            title="Pedidos (Mes)" 
-            value="{{ $totalOrdersMonth }}" 
-            icon="o-shopping-bag" 
-            class="shadow-sm"
-        />
-        <x-mary-stat 
-            title="Ingresos Est." 
-            value="${{ number_format($estimatedRevenueMonth, 2) }}" 
-            icon="o-currency-dollar" 
-            class="shadow-sm"
-            description="Basado en pedidos generados"
-        />
-        <x-mary-stat 
-            title="Top Producto" 
-            value="{{ Str::limit($topProductName, 15) }}" 
-            icon="o-trophy" 
-            class="shadow-sm"
-            tooltip="{{ $topProductName }}"
-        />
+        <x-mary-stat title="Pedidos (Mes)" value="{{ $totalOrdersMonth }}" icon="o-shopping-bag" class="shadow-sm" />
+        <x-mary-stat title="Ingresos Est." value="${{ number_format($estimatedRevenueMonth, 2) }}"
+            icon="o-currency-dollar" class="shadow-sm" description="Basado en pedidos generados" />
+        <x-mary-stat title="Top Producto" value="{{ Str::limit($topProductName, 15) }}" icon="o-trophy"
+            class="shadow-sm" tooltip="{{ $topProductName }}" />
     </div>
 
     {{-- CHARTS SECTION --}}
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
+
         {{-- LINE CHART --}}
         <x-mary-card title="Evolución de Pedidos" subtitle="Últimos 30 días" class="shadow-sm">
-            <div 
-                x-data="{
+            <div x-data="{
                     init() {
                         new Chart(this.$refs.canvas, {
                             type: 'line',
@@ -151,17 +138,14 @@ class extends Component {
                             }
                         });
                     }
-                }"
-                class="h-64"
-            >
+                }" class="h-64">
                 <canvas x-ref="canvas"></canvas>
             </div>
         </x-mary-card>
 
         {{-- DOUGHNUT CHART --}}
         <x-mary-card title="Ventas por Categoría" subtitle="Distribución estimada" class="shadow-sm">
-             <div 
-                x-data="{
+            <div x-data="{
                     init() {
                         new Chart(this.$refs.canvas, {
                             type: 'doughnut',
@@ -169,13 +153,7 @@ class extends Component {
                                 labels: @js($doughnutLabels),
                                 datasets: [{
                                     data: @js($doughnutData),
-                                    backgroundColor: [
-                                        '#1f2937', // Dark
-                                        '#d4af37', // Gold
-                                        '#9ca3af', // Gray
-                                        '#f3f4f6', // Light
-                                        '#4b5563'  // Slate
-                                    ],
+                                    backgroundColor: @js($doughnutColors),
                                     borderWidth: 0
                                 }]
                             },
@@ -188,9 +166,7 @@ class extends Component {
                             }
                         });
                     }
-                }"
-                class="h-64"
-            >
+                }" class="h-64">
                 <canvas x-ref="canvas"></canvas>
             </div>
         </x-mary-card>

@@ -4,13 +4,14 @@ use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Rule;
+use Livewire\Attributes\Confirm;
 use App\Models\Category;
 use Mary\Traits\Toast;
 use Illuminate\Support\Str;
 
-new 
-#[Layout('components.layouts.admin')]
-class extends Component {
+new
+    #[Layout('components.layouts.admin')]
+    class extends Component {
     use Toast, WithFileUploads;
 
     public $categories = [];
@@ -20,10 +21,10 @@ class extends Component {
     // Form
     #[Rule('required')]
     public string $name = '';
-    
+
     #[Rule('nullable')]
     public string $slug = '';
-    
+
     #[Rule('nullable')]
     public string $color = '';
 
@@ -89,6 +90,7 @@ class extends Component {
         $this->refresh();
     }
 
+    #[Confirm('¿Estás seguro de eliminar esta categoría?')]
     public function delete($id)
     {
         Category::destroy($id);
@@ -107,39 +109,43 @@ class extends Component {
     <x-mary-card>
         <x-mary-table :rows="$categories" :headers="[['key' => 'id', 'label' => '#'], ['key' => 'image_path', 'label' => 'Imagen'], ['key' => 'name', 'label' => 'Nombre'], ['key' => 'products_count', 'label' => 'Productos'], ['key' => 'actions', 'label' => 'Acciones']]" striped>
             @scope('image_path', $category)
-                @if($category->image_path)
-                    <div class="avatar">
-                        <div class="w-10 rounded">
-                            <img src="{{ asset('storage/' . $category->image_path) }}" />
-                        </div>
+            @if($category->image_path)
+                <div class="avatar">
+                    <div class="w-10 rounded">
+                        <img src="{{ asset('storage/' . $category->image_path) }}" />
                     </div>
-                @else
-                    <x-mary-icon name="o-photo" class="w-8 h-8 text-gray-300" />
-                @endif
+                </div>
+            @else
+                <x-mary-icon name="o-photo" class="w-8 h-8 text-gray-300" />
+            @endif
             @endscope
 
             @scope('name', $category)
-                <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 rounded-full {{ $category->color }}"></div>
-                    {{ $category->name }}
-                </div>
+            <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full {{ $category->color }}"></div>
+                {{ $category->name }}
+            </div>
             @endscope
 
             @scope('actions', $category)
-                <div class="flex">
-                    <x-mary-button icon="o-pencil" wire:click="edit({{ $category->id }})" class="btn-ghost btn-sm text-info" />
-                    <x-mary-button icon="o-trash" wire:click="delete({{ $category->id }})" class="btn-ghost btn-sm text-error" onclick="return confirm('¿Seguro?') || event.stopImmediatePropagation()" />
-                </div>
+            <div class="flex">
+                <x-mary-button icon="o-pencil" wire:click="edit({{ $category->id }})"
+                    class="btn-ghost btn-sm text-info" />
+                <x-mary-button icon="o-trash" wire:click="delete({{ $category->id }})"
+                    class="btn-ghost btn-sm text-error"
+                    onclick="return confirm('¿Seguro?') || event.stopImmediatePropagation()" />
+            </div>
             @endscope
         </x-mary-table>
     </x-mary-card>
 
-    <x-mary-drawer wire:model="drawer" title="{{ $editingId ? 'Editar Categoría' : 'Nueva Categoría' }}" right class="w-11/12 lg:w-1/3">
+    <x-mary-drawer wire:model="drawer" title="{{ $editingId ? 'Editar Categoría' : 'Nueva Categoría' }}" right
+        class="w-11/12 lg:w-1/3">
         <x-mary-form wire:submit="save">
             <x-mary-input label="Nombre" wire:model.live="name" />
             <x-mary-input label="Slug" wire:model="slug" />
             <x-mary-input label="Clases de Color (Tailwind)" wire:model="color" hint="Ej: bg-red-100 text-red-800" />
-            
+
             <x-mary-file wire:model="image" label="Imagen" accept="image/*" crop-after-change>
                 <img src="{{ $image ?? '' }}" class="h-40 rounded-lg" />
             </x-mary-file>

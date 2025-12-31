@@ -8,14 +8,15 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="flex items-center justify-center min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200 bg-cover bg-center"
-  style="background-image: url({{ asset('storage/imgs/background.webp') }})" data-theme="light">
-  
-    <div class="w-full max-w-md">
-      @if(isset($slot))
-        {{ $slot }}
-      @endif
-    </div>
+<body
+  class="flex items-center justify-center min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200 bg-cover bg-center"
+  style="background-image: url({{ asset('storage/products/login-background.jpg') }})" data-theme="light">
+
+  <div class="w-full max-w-md">
+    @if(isset($slot))
+      {{ $slot }}
+    @endif
+  </div>
 
   <x-mary-toast />
   @livewireScripts

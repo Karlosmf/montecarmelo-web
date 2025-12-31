@@ -17,10 +17,9 @@
         <div class="max-w-3xl mx-auto mb-16">
             <p
                 class="body-text text-[#E5E5E5] text-justify md:text-center leading-[2] tracking-wide text-sm md:text-base opacity-80">
-                En Monte Carmelo, creemos que la verdadera calidad nace del respeto por la tradición.
-                Somos artesanos del sabor, dedicados a seleccionar las materias primas más nobles para
-                crear productos que honran el paladar exigente. Nuestra historia es un viaje de pasión,
-                donde cada corte refleja nuestro compromiso inquebrantable con la excelencia y la sofisticación.
+                En Monte Carmelo recuperamos la tradición de la charcutería de autor. Desde Avellaneda, Santa Fe,
+                elaboramos fiambres con tiempos pausados, respetando los procesos naturales que garantizan la calidad
+                premium que tu mesa merece.
             </p>
         </div>
 
