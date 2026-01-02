@@ -114,11 +114,28 @@
                 <x-mary-menu-item title="Etiquetas" icon="o-hashtag" link="/admin/tags"
                     class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl" />
 
+                <x-mary-menu-separator title="Sitio Web"
+                    class="text-text-muted/50 font-serif uppercase tracking-widest text-[10px]" />
+
+                <x-mary-menu-item title="Hero Slider" icon="o-photo" link="/admin/slides"
+                    class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl" />
+
                 <x-mary-menu-separator title="Sistema"
                     class="text-text-muted/50 font-serif uppercase tracking-widest text-[10px]" />
 
                 <x-mary-menu-item title="Usuarios" icon="o-users" link="/admin/users"
-                    class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl" />
+                    class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl">
+                    <x-slot:actions>
+                        @php
+                            $pendingUsers = \App\Models\User::pending()->count();
+                        @endphp
+                        @if($pendingUsers > 0)
+                            <div class="badge badge-sm bg-error text-white border-0 animate-pulse">
+                                {{ $pendingUsers }}
+                            </div>
+                        @endif
+                    </x-slot:actions>
+                </x-mary-menu-item>
                 <x-mary-menu-item title="Ir al Sitio" icon="o-arrow-top-right-on-square" link="/"
                     class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl" />
 

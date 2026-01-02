@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin123'),
         ]);
 
-        // $this->call(ProductSeeder::class);
+        $this->call([
+            SlideSeeder::class,
+            // ProductSeeder::class,
+        ]);
     }
 }

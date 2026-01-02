@@ -10,14 +10,17 @@ use Mary\Traits\Toast;
 // uses([Toast::class]); // Not needed here anymore if logic moved.
 layout('components.layouts.app');
 
-state(['featuredProducts' => fn() => Product::where('is_featured', true)->take(3)->get()]);
+state([
+    'featuredProducts' => fn() => Product::where('is_featured', true)->take(3)->get(),
+    'slides' => fn() => \App\Models\Slide::where('is_active', true)->orderBy('order')->get()
+]);
 
 ?>
 
 <div class="font-sans text-text-main bg-background-main overflow-x-hidden">
 
     {{-- 1. HERO SLIDER SECTION --}}
-    <x-home.hero />
+    <x-home.hero :slides="$slides" />
 
     {{-- 2. SECTION "SOMOS" --}}
     <x-home.about />

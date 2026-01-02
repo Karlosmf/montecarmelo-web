@@ -35,7 +35,27 @@ Esta es la sección operativa más importante.
 El sitio público ha sido actualizado con la nueva identidad de marca:
 *   **Hero Section:** Imagen de fondo de alta calidad y tipografía elegante.
 *   **Sección Somos:** Texto institucional actualizado.
-*   **Galería y Storytelling:** Imágenes de productos reales con efectos visuales (bordes redondeados, estilo polaroid, animaciones).
+
+## 6. Gestión de Hero Slider (`/admin/slides`)
+**Nuevo:** Ahora puede controlar las imágenes principales del inicio (Hero) desde el panel.
+*   **Crear Slide:** Suba una imagen, agregue un título, descripción y opcionalmente un botón con enlace.
+*   **Orden:** Utilice las flechas "Arriba/Abajo" para reordenar en qué secuencia aparecen las imágenes.
+*   **Activar/Desactivar:** Puede ocultar temporalmente un slide sin borrarlo usando el interruptor de estado.
+*   **Eliminar:** Cuenta con un sistema de seguridad (modal) para confirmar antes de borrar una imagen permanentemente.
+
+## 7. Gestión de Usuarios y Clientes B2B (`/admin/users`)
+Esta sección permite administrar los accesos al sistema.
+*   **Crear Usuario Interno:** Utilice el botón "Nuevo Usuario" para registrar administradores o empleados manualmente. Puede asignar rol de `Usuario` o `Administrador` y definir su contraseña.
+*   **Registro B2B (Mayorista):**
+    *   Los clientes ahora pueden solicitar cuenta desde `/register-b2b`.
+    *   **Proceso:** El cliente completa sus datos (Razón Social, CUIT, Teléfono) y es redirigido a WhatsApp para notificarle.
+    *   **Aprobación:** La cuenta se crea en estado **PENDIENTE** (Inactivo).
+*   **Notificaciones:** En el menú lateral verá un **globo rojo** indicando cuántos usuarios nuevos están esperando aprobación.
+*   **Aprobar Cuentas:**
+    1.  Vaya a la pestaña "Pendientes".
+    2.  Verifique los datos del cliente (haciendo hover o viendo la tabla).
+    3.  Haga clic en el botón **Verde (Check)** para activar la cuenta. El usuario ahora podrá iniciar sesión.
+
 
 ---
 **Soporte Técnico:**
