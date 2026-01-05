@@ -50,27 +50,23 @@
                         <div class="font-bold text-lg leading-none uppercase">
                             Monte Carmelo
                         </div>
-                        <div class="text-[10px] text-base-content/60 uppercase tracking-widest font-bold mt-1">Control
+                        <div class="text-xs text-base-content/60 uppercase tracking-widest font-bold">Control
                             Panel</div>
                     </div>
                 </div>
             </div>
 
             {{-- MENU --}}
-            <x-mary-menu activate-by-route class="mt-4 px-2 space-y-1">
+            <x-mary-menu activate-by-route>
                 {{-- User Info (Sidebar version) --}}
                 @if($user = auth()->user())
                     <div class="px-2 py-2 mb-6">
                         <div class="flex items-center justify-between p-2 rounded-xl bg-base-200">
                             <div class="flex items-center gap-2">
-                                <div class="avatar placeholder">
-                                    <div class="bg-neutral text-neutral-content rounded-full w-8">
-                                        <span class="text-xs">{{ substr($user->name, 0, 1) }}</span>
-                                    </div>
-                                </div>
                                 <span class="text-xs font-semibold truncate max-w-[100px]">{{ $user->name }}</span>
                             </div>
-                            <x-mary-button icon="o-power" link="/logout" class="btn-ghost btn-xs text-error" tooltip="Salir" />
+                            <x-mary-button icon="o-power" link="/logout" class="btn-ghost btn-xs text-error"
+                                tooltip="Salir" />
                         </div>
                     </div>
                 @endif
@@ -92,8 +88,8 @@
                 <x-mary-menu-separator title="Catálogo" />
 
                 <x-mary-menu-item title="Productos" icon="o-cube" link="/admin/products" />
-                <x-mary-menu-item title="Categorías" icon="o-tag" link="/admin/categories" />
-                <x-mary-menu-item title="Etiquetas" icon="o-hashtag" link="/admin/tags" />
+                <x-mary-menu-item title="Categorías" icon="o-hashtag" link="/admin/categories" />
+                <x-mary-menu-item title="Etiquetas" icon="o-tag" link="/admin/tags" />
 
                 <x-mary-menu-separator title="Sitio Web" />
 

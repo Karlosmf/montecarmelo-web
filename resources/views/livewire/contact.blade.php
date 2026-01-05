@@ -47,7 +47,7 @@ $save = function () {
 
             <div class="space-y-4">
                 {{-- Local 1 --}}
-                <x-mary-card class="bg-base-200 border border-base-300 shadow-md">
+                <x-mary-card class="bg-base-200 rounded-xl shadow-md">
                     <x-mary-list-item :item="[]" class="!p-0">
                         <x-slot:avatar>
                             <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
@@ -77,7 +77,7 @@ $save = function () {
                 </x-mary-card>
 
                  {{-- Local 2 --}}
-                 <x-mary-card class="bg-base-200 border border-base-300 shadow-md">
+                 <x-mary-card class="bg-base-200 rounded-xl shadow-md">
                     <x-mary-list-item :item="[]" class="!p-0">
                         <x-slot:avatar>
                             <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
@@ -115,7 +115,7 @@ $save = function () {
             </h2>
             <p class="mb-8 text-gray-400">Llevá la calidad de Monte Carmelo a tu mostrador. Precios especiales para mayoristas.</p>
 
-            <x-mary-form wire:submit="save" class="bg-base-200 p-8 rounded-xl border border-base-300 shadow-lg">
+            <x-mary-form wire:submit="save" class="bg-base-200 p-8 rounded-xl shadow-lg">
                 <x-mary-input label="Nombre del Negocio" placeholder="Ej: Almacén Don Pepe" icon="o-briefcase" wire:model="business_name" />
                 
                 <x-mary-select label="Rubro" icon="o-tag" wire:model="business_type" :options="[

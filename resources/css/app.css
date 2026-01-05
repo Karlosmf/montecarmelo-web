@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Playfair+Display:wght@400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Playfair+Display:wght@400;600;700&display=swap");
 @import "tailwindcss";
 
 @plugin "daisyui" {
@@ -18,41 +18,40 @@
     --font-sans: "Lato", sans-serif;
 
     /* Custom Color Palette for Monte Carmelo (SSOT) */
-    --color-primary: #D4AF37;
-    --color-primary-hover: #B5952F;
+    --color-primary: #d4af37;
+    --color-primary-hover: #b5952f;
 
     --color-background-main: #121212;
-    --color-background-card: #1E1E1E;
+    --color-background-card: #1e1e1e;
 
-    --color-text-main: #E5E5E5;
-    --color-text-muted: #A3A3A3;
+    --color-text-main: #e5e5e5;
+    --color-text-muted: #a3a3a3;
 
     /* Mapping specific to DaisyUI/MaryUI expectation if needed, or just standard */
     --color-base-100: #121212;
-    --color-base-200: #1E1E1E;
-    --color-base-content: #E5E5E5;
+    --color-base-200: #1e1e1e;
+    --color-base-content: #e5e5e5;
 
     --color-primary-content: #121212;
 }
 
 /* Custom UI Patterns from JSON */
 @layer components {
-
     /* Typography Helpers */
     .h1-hero {
-        @apply font-serif text-5xl md:text-7xl font-bold uppercase tracking-widest text-[#D4AF37] mb-6;
+        @apply font-serif text-5xl md:text-7xl font-bold uppercase tracking-widest text-primary mb-6;
     }
 
     .h2-section {
-        @apply font-serif text-3xl md:text-4xl uppercase tracking-[0.3em] text-[#D4AF37] mb-8 font-bold;
+        @apply font-serif text-3xl md:text-4xl uppercase tracking-[0.3em] text-primary mb-8 font-bold;
     }
 
     .h3-product {
-        @apply font-serif text-2xl uppercase tracking-[0.2em] text-[#D4AF37] mb-4;
+        @apply font-serif text-2xl uppercase tracking-[0.2em] text-primary mb-4;
     }
 
     .body-text {
-        @apply font-sans text-base md:text-lg font-light leading-relaxed text-[#A3A3A3];
+        @apply font-sans text-base md:text-lg font-light leading-relaxed text-text-muted;
         /* Grayish text */
     }
 
@@ -60,42 +59,42 @@
     .input,
     .textarea,
     .select {
-        @apply border border-white/20 bg-base-200/50 focus:border-primary focus:outline-none;
+        @apply border border-base-content/30 bg-base-200/80 text-base-content focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary;
+        border-width: 1px !important;
+        border-style: solid !important;
     }
 
     /* Input Minimalista (Solo borde abajo) */
     .input-gold-line {
-        @apply bg-transparent border-b border-[#D4AF37]/30 text-[#E5E5E5] px-0 py-4 focus:border-[#D4AF37] focus:ring-0 outline-none w-full transition-all duration-300 placeholder-[#525252] font-sans text-sm tracking-wide;
+        @apply bg-transparent border-b border-primary/30 text-[#E5E5E5] px-0 py-4 focus:border-primary focus:ring-0 outline-none w-full transition-all duration-300 placeholder-[#525252] font-sans text-sm tracking-wide;
     }
 
     /* Botón Luxury: Borde fino, texto separado */
     .btn-luxury {
-        @apply inline-block px-10 py-3 bg-transparent border border-[#D4AF37] text-[#D4AF37] font-serif text-xs font-bold uppercase tracking-[0.3em] transition-all duration-300 hover:bg-[#D4AF37] hover:text-[#121212];
+        @apply inline-block px-10 py-3 bg-transparent border border-primary text-primary font-serif text-xs font-bold uppercase tracking-[0.3em] transition-all duration-300 hover:bg-primary hover:text-[#121212];
     }
 
     /* Icono Decorativo Dorado */
     .icon-gold {
-        @apply text-[#D4AF37] opacity-80 mb-6;
+        @apply text-primary opacity-80 mb-6;
     }
 
     /* Polaroid Effect */
     .polaroid-base {
-        @apply bg-white/5 backdrop-blur-md p-3 pb-8 shadow-[0_10px_30px_rgba(0, 0, 0, 0.5)] transition-all duration-500 border border-white/10 relative overflow-hidden;
+        @apply bg-white/5 backdrop-blur-md p-3 pb-8 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-500 border border-white/10 relative overflow-hidden;
         /* Relief Depth */
-        box-shadow:
-            5px 10px 15px rgba(0, 0, 0, 0.6),
-            /* Deep shadow */
-            0 1px 2px rgba(255, 255, 255, 0.1) inset;
+        box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.6),
+            /* Deep shadow */ 0 1px 2px rgba(255, 255, 255, 0.1) inset;
         /* Top reflection implies thickness */
     }
 
     .polaroid-base::before {
         content: "";
-        @apply absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/20 pointer-events-none;
+        @apply absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-white/20 pointer-events-none;
     }
 
     .polaroid-base:hover {
-        @apply scale-105 z-50 shadow-[0_20px_50px_rgba(212, 175, 55, 0.2)] rotate-0;
+        @apply scale-105 z-50 shadow-[0_20px_50px_rgba(212,175,55,0.2)] rotate-0;
         /* Highlight border on hover */
         border-color: rgba(212, 175, 55, 0.3);
     }
@@ -133,7 +132,7 @@
     }
 
     .text-gold-gradient {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] bg-[length:200%_auto];
+        @apply bg-clip-text text-transparent bg-linear-to-r from-primary via-[#F3E5AB] to-primary bg-size-[200%_auto];
         animation: shine 4s linear infinite;
     }
 }
