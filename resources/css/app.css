@@ -57,8 +57,10 @@
     }
 
     /* UI Components */
-    .glass-panel {
-        @apply bg-[#1E1E1E]/50 backdrop-blur-sm border border-[#D4AF37]/10;
+    .input,
+    .textarea,
+    .select {
+        @apply border border-white/20 bg-base-200/50 focus:border-primary focus:outline-none;
     }
 
     /* Input Minimalista (Solo borde abajo) */
@@ -78,11 +80,13 @@
 
     /* Polaroid Effect */
     .polaroid-base {
-        @apply bg-white/5 backdrop-blur-md p-3 pb-8 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-500 border border-white/10 relative overflow-hidden;
+        @apply bg-white/5 backdrop-blur-md p-3 pb-8 shadow-[0_10px_30px_rgba(0, 0, 0, 0.5)] transition-all duration-500 border border-white/10 relative overflow-hidden;
         /* Relief Depth */
-        box-shadow: 
-            5px 10px 15px rgba(0, 0, 0, 0.6), /* Deep shadow */
-            0 1px 2px rgba(255, 255, 255, 0.1) inset; /* Top reflection implies thickness */
+        box-shadow:
+            5px 10px 15px rgba(0, 0, 0, 0.6),
+            /* Deep shadow */
+            0 1px 2px rgba(255, 255, 255, 0.1) inset;
+        /* Top reflection implies thickness */
     }
 
     .polaroid-base::before {
@@ -91,17 +95,18 @@
     }
 
     .polaroid-base:hover {
-        @apply scale-105 z-50 shadow-[0_20px_50px_rgba(212,175,55,0.2)] rotate-0;
+        @apply scale-105 z-50 shadow-[0_20px_50px_rgba(212, 175, 55, 0.2)] rotate-0;
         /* Highlight border on hover */
         border-color: rgba(212, 175, 55, 0.3);
     }
-    
+
     /* Scroll Reveal Animation */
     @keyframes fade-in-up {
         from {
             opacity: 0;
             transform: translateY(20px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);

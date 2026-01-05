@@ -165,91 +165,57 @@ new
 
 <div>
     {{-- HEADER --}}
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <div>
-            <h1 class="heading-modern text-3xl">Gestión de Hero Slider</h1>
-            <p class="text-text-muted mt-1 font-light tracking-wide">Administra las imágenes y contenido del slider
-                principal.</p>
-        </div>
-        <x-mary-button label="Nuevo Slide" icon="o-plus" class="btn-primary font-serif tracking-widest"
-            wire:click="create" />
-    </div>
+    <x-mary-header title="Gestión de Hero Slider" subtitle="Administra las imágenes y contenido del slider principal." separator>
+        <x-slot:middle class="!justify-end">
+             <x-mary-button label="Nuevo Slide" icon="o-plus" class="btn-primary" wire:click="create" />
+        </x-slot:middle>
+    </x-mary-header>
 
     {{-- SLIDES LIST (Grid) --}}
-    <div class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         @forelse($slides as $slide)
-            <div wire:key="{{ $slide->id }}"
-                class="glass-panel p-4 rounded-xl flex flex-col md:flex-row gap-6 items-center group">
-
-                {{-- Image Preview --}}
-                <div class="w-full md:w-48 h-32 rounded-lg overflow-hidden border border-white/10 shrink-0 relative">
-                    <img src="{{ asset('storage/' . $slide->image_path) }}"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                    <div
-                        class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="text-xs uppercase font-bold tracking-wider text-white">Preview</span>
+            <x-mary-card wire:key="{{ $slide->id }}" class="!p-0 overflow-hidden">
+                <figure class="aspect-[16/9] relative group">
+                    <img src="{{ asset('storage/' . $slide->image_path) }}" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" />
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                         <x-mary-button icon="o-pencil" class="btn-circle btn-ghost text-white" wire:click="edit({{ $slide->id }})" />
+                    </div>
+                </figure>
+                
+                <div class="card-body p-4">
+                    <div class="flex justify-between items-start">
+                         <h2 class="card-title text-base">{{ $slide->title }}</h2>
+                         <x-mary-badge :value="$slide->is_active ? 'Activo' : 'Inactivo'" :class="$slide->is_active ? 'badge-success' : 'badge-error'" />
+                    </div>
+                    <p class="text-xs opacity-70 line-clamp-2">{{ $slide->description }}</p>
+                    
+                    <div class="card-actions justify-end mt-4 items-center gap-2">
+                        <div class="join">
+                             <x-mary-button icon="o-arrow-up" wire:click="moveUp({{ $slide->id }})" class="join-item btn-ghost btn-xs" />
+                             <x-mary-button icon="o-arrow-down" wire:click="moveDown({{ $slide->id }})" class="join-item btn-ghost btn-xs" />
+                        </div>
+                        <x-mary-button icon="o-trash" wire:click="confirmDelete({{ $slide->id }})" class="btn-ghost btn-sm text-error" />
                     </div>
                 </div>
-
-                {{-- Content --}}
-                <div class="flex-1 text-center md:text-left">
-                    <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
-                        <h3 class="font-serif text-xl text-text-main">{{ $slide->title }}</h3>
-                        @if(!$slide->is_active)
-                            <span class="badge badge-error text-xs">Inactivo</span>
-                        @else
-                            <span class="badge badge-success text-xs">Activo</span>
-                        @endif
-                    </div>
-                    <p class="text-text-muted text-sm mb-2 line-clamp-2">{{ $slide->description }}</p>
-                    @if($slide->button_text)
-                        <div class="text-xs text-primary font-mono"><span class="opacity-50">Button:</span>
-                            [{{ $slide->button_text }}] -> {{ $slide->button_url }}</div>
-                    @endif
-                </div>
-
-                {{-- Actions --}}
-                <div class="flex flex-row md:flex-col gap-2 items-center">
-                    <div class="flex gap-1 bg-[#121212] rounded-lg p-1 border border-white/5">
-                        <x-mary-button icon="o-arrow-up" wire:click="moveUp({{ $slide->id }})"
-                            class="btn-ghost btn-xs text-white hover:text-primary" />
-                        <x-mary-button icon="o-arrow-down" wire:click="moveDown({{ $slide->id }})"
-                            class="btn-ghost btn-xs text-white hover:text-primary" />
-                    </div>
-
-                    <div class="flex gap-2">
-                        <x-mary-button icon="o-pencil" wire:click="edit({{ $slide->id }})"
-                            class="btn-ghost btn-sm text-white hover:text-primary" />
-                        <button 
-                            type="button"
-                            wire:click="confirmDelete({{ $slide->id }})" 
-                            class="btn btn-ghost btn-sm text-error/50 hover:text-error px-2 transition-colors">
-                            <x-mary-icon name="o-trash" class="w-4 h-4" />
-                        </button>
-                    </div>
-                </div>
-            </div>
+            </x-mary-card>
         @empty
-            <div
-                class="flex flex-col items-center justify-center p-12 glass-panel rounded-xl border-dashed border-2 border-white/10">
-                <x-mary-icon name="o-photo" class="w-12 h-12 text-gray-600 mb-4" />
-                <div class="text-text-muted text-lg font-serif">No hay slides creados</div>
-                <x-mary-button label="Crear Primer Slide" icon="o-plus" class="btn-primary btn-sm mt-4"
-                    wire:click="create" />
+            <div class="col-span-full py-12 text-center opacity-50">
+                 <x-mary-icon name="o-photo" class="w-12 h-12 mx-auto mb-2" />
+                 <div>No hay slides creados</div>
             </div>
         @endforelse
     </div>
 
     {{-- DRAWER --}}
     <x-mary-drawer wire:model="drawer" title="{{ $editingSlide->exists ? 'Editar Slide' : 'Nuevo Slide' }}" right
-        class="w-11/12 lg:w-1/3 glass-dark !bg-[#121212]/95 backdrop-blur-xl border-l border-white/10">
+        class="w-11/12 lg:w-1/3">
 
         <x-mary-form wire:submit="save" class="mt-4 space-y-4">
 
             {{-- IMAGE UPLOAD --}}
             <div class="flex flex-col items-center mb-6">
                 <div
-                    class="relative group cursor-pointer w-full h-48 rounded-xl overflow-hidden border-2 border-white/10 hover:border-primary/50 transition-all bg-[#121212]">
+                    class="relative group cursor-pointer w-full h-48 rounded-xl overflow-hidden border-2 border-dashed border-base-300 hover:border-primary transition-all bg-base-200">
                     @if($photo)
                         <img src="{{ $photo->temporaryUrl() }}" class="w-full h-full object-cover" />
                     @elseif($editingSlide->image_path)
@@ -270,21 +236,19 @@ new
                 @error('photo') <span class="text-error text-xs mt-1">{{ $message }}</span> @enderror
             </div>
 
-            <x-mary-input label="Título" wire:model="title" class="bg-[#121212] border-white/10 focus:border-primary" />
-            <x-mary-textarea label="Descripción" wire:model="description" rows="3"
-                class="bg-[#121212] border-white/10 focus:border-primary" />
+            <x-mary-input label="Título" wire:model="title" />
+            <x-mary-textarea label="Descripción" wire:model="description" rows="3" />
 
             <div class="grid grid-cols-2 gap-4">
-                <x-mary-input label="Texto Botón (Opcional)" wire:model="button_text"
-                    class="bg-[#121212] border-white/10 focus:border-primary" />
-                <x-mary-input label="Link Botón (Opcional)" wire:model="button_url"
-                    class="bg-[#121212] border-white/10 focus:border-primary" />
+                <x-mary-input label="Texto Botón (Opcional)" wire:model="button_text" />
+                <x-mary-input label="Link Botón (Opcional)" wire:model="button_url" />
             </div>
 
-            <x-mary-toggle label="Activo" wire:model="is_active" class="toggle-primary" right />
+            <x-mary-toggle label="Activo" wire:model="is_active" class="toggle-primary border rounded-sm w-8" />
 
             <x-slot:actions>
-                <x-mary-button label="Cancelar" @click="$wire.drawer = false" class="btn-ghost" />
+                <x-mary-button label="Cancelar" @click="$wire.drawer = false"
+                    class="btn-ghost text-white border border-white/10" />
                 <x-mary-button label="Guardar" class="btn-primary" type="submit" spinner="save" icon="o-check" />
             </x-slot:actions>
         </x-mary-form>
@@ -293,7 +257,9 @@ new
     <x-mary-modal wire:model="deleteModal" class="backdrop-blur-sm">
         <div class="mb-5">
             <h3 class="text-lg font-bold text-error">Eliminar Slide</h3>
-            <p class="py-4 text-gray-400">¿Estás seguro que deseas eliminar el slide <span class="text-white font-bold">"{{ $slideToDelete?->title }}"</span>? Esta acción no se puede deshacer.</p>
+            <p class="py-4 text-gray-500">¿Estás seguro que deseas eliminar el slide <span
+                    class="font-bold">"{{ $slideToDelete?->title }}"</span>? Esta acción no se puede
+                deshacer.</p>
         </div>
         <x-slot:actions>
             <x-mary-button label="Cancelar" @click="$wire.deleteModal = false" />

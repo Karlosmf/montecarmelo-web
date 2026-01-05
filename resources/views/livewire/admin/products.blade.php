@@ -98,7 +98,7 @@ new
         $this->is_active = $product->is_active;
         $this->is_featured = $product->is_featured;
 
-        $this->tags = $product->tags()->pluck('id')->toArray();
+        $this->tags = $product->tags()->pluck('tags.id')->toArray();
         $this->image = null; // Reset file input
 
         $this->drawer = true;
@@ -265,8 +265,8 @@ new
             </x-mary-file>
 
             <div class="flex gap-8 mt-4">
-                <x-mary-checkbox label="Activo en Catálogo" wire:model="is_active" />
-                <x-mary-checkbox label="Destacado (Home)" wire:model="is_featured" />
+                <x-mary-toggle label="Activo en Catálogo" wire:model="is_active" class="toggle-primary" right />
+                <x-mary-toggle label="Destacado (Home)" wire:model="is_featured" class="toggle-primary" right />
             </div>
 
             <x-slot:actions>

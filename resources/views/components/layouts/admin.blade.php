@@ -20,27 +20,16 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="min-h-screen font-sans antialiased bg-gradient-to-br from-[#0f0f0f] to-[#1a1a1a] text-text-main">
-
-    {{-- Ambient Lighting --}}
-    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <div
-            class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#D4AF37] rounded-full mix-blend-screen filter blur-[120px] opacity-10 animate-pulse">
-        </div>
-        <div
-            class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-[#8C1C13] rounded-full mix-blend-screen filter blur-[130px] opacity-10">
-        </div>
-    </div>
+<body class="min-h-screen font-sans antialiased bg-base-200/50">
 
     {{-- TOP NAVBAR (Mobile only) --}}
-    <x-mary-nav sticky class="lg:hidden glass-dark border-b border-white/5">
+    <x-mary-nav sticky class="lg:hidden">
         <x-slot:brand>
-            <div class="ml-5 text-xl font-serif font-bold text-primary tracking-widest uppercase">MC <span
-                    class="text-white font-light opacity-50">ADMIN</span></div>
+            <div class="ml-5 text-xl font-bold text-primary">MC ADMIN</div>
         </x-slot:brand>
         <x-slot:actions>
             <label for="main-drawer" class="lg:hidden mr-3">
-                <x-mary-icon name="o-bars-3" class="cursor-pointer text-primary" />
+                <x-mary-icon name="o-bars-3" class="cursor-pointer" />
             </label>
         </x-slot:actions>
     </x-mary-nav>
@@ -49,21 +38,20 @@
     <x-mary-main full-width>
 
         {{-- SIDEBAR --}}
-        <x-slot:sidebar drawer="main-drawer" collapsible class="glass-dark border-r border-white/5 !bg-transparent">
+        <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-100">
 
             {{-- BRAND LOGO --}}
             <div class="p-6 pt-10 hidden lg:block">
                 <div class="flex items-center gap-3">
-                    <div
-                        class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/30">
-                        <x-mary-icon name="o-sparkles" class="w-6 h-6 text-primary" />
+                    <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                        <x-mary-icon name="o-sparkles" class="w-6 h-6" />
                     </div>
                     <div>
-                        <div class="font-serif font-bold text-lg leading-none text-primary uppercase tracking-widest">
+                        <div class="font-bold text-lg leading-none uppercase">
                             Monte Carmelo
                         </div>
-                        <div class="text-[10px] text-text-muted uppercase tracking-[0.2em] font-bold mt-1">Control Panel
-                        </div>
+                        <div class="text-[10px] text-base-content/60 uppercase tracking-widest font-bold mt-1">Control
+                            Panel</div>
                     </div>
                 </div>
             </div>
@@ -73,71 +61,59 @@
                 {{-- User Info (Sidebar version) --}}
                 @if($user = auth()->user())
                     <div class="px-2 py-2 mb-6">
-                        <div class="flex items-center justify-between glass-panel p-2 rounded-xl border border-white/5">
+                        <div class="flex items-center justify-between p-2 rounded-xl bg-base-200">
                             <div class="flex items-center gap-2">
-                                <div
-                                    class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs border border-primary/30">
-                                    {{ substr($user->name, 0, 1) }}
+                                <div class="avatar placeholder">
+                                    <div class="bg-neutral text-neutral-content rounded-full w-8">
+                                        <span class="text-xs">{{ substr($user->name, 0, 1) }}</span>
+                                    </div>
                                 </div>
-                                <span
-                                    class="text-xs font-semibold truncate max-w-[100px] text-text-main">{{ $user->name }}</span>
+                                <span class="text-xs font-semibold truncate max-w-[100px]">{{ $user->name }}</span>
                             </div>
-                            <x-mary-button icon="o-power" link="/logout"
-                                class="btn-ghost btn-xs text-error/70 hover:text-error" tooltip="Salir" />
+                            <x-mary-button icon="o-power" link="/logout" class="btn-ghost btn-xs text-error" tooltip="Salir" />
                         </div>
                     </div>
                 @endif
 
-                <x-mary-menu-item title="Estadísticas" icon="o-chart-bar" link="/admin/dashboard"
-                    class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl" />
-                <x-mary-menu-item title="Pedidos / Leads" icon="o-inbox-stack" link="/admin/orders"
-                    class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl">
+                <x-mary-menu-item title="Estadísticas" icon="o-chart-bar" link="/admin/dashboard" />
+                <x-mary-menu-item title="Pedidos / Leads" icon="o-inbox-stack" link="/admin/orders">
                     <x-slot:actions>
                         @php
                             $pendingCount = \App\Models\Order::where('status', 'pending')->count();
                         @endphp
                         @if($pendingCount > 0)
-                            <div class="badge badge-sm bg-error text-white border-0 animate-pulse">
+                            <div class="badge badge-sm bg-error text-white border-0">
                                 {{ $pendingCount }}
                             </div>
                         @endif
                     </x-slot:actions>
                 </x-mary-menu-item>
 
-                <x-mary-menu-separator title="Catálogo"
-                    class="text-text-muted/50 font-serif uppercase tracking-widest text-[10px]" />
+                <x-mary-menu-separator title="Catálogo" />
 
-                <x-mary-menu-item title="Productos" icon="o-cube" link="/admin/products"
-                    class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl" />
-                <x-mary-menu-item title="Categorías" icon="o-tag" link="/admin/categories"
-                    class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl" />
-                <x-mary-menu-item title="Etiquetas" icon="o-hashtag" link="/admin/tags"
-                    class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl" />
+                <x-mary-menu-item title="Productos" icon="o-cube" link="/admin/products" />
+                <x-mary-menu-item title="Categorías" icon="o-tag" link="/admin/categories" />
+                <x-mary-menu-item title="Etiquetas" icon="o-hashtag" link="/admin/tags" />
 
-                <x-mary-menu-separator title="Sitio Web"
-                    class="text-text-muted/50 font-serif uppercase tracking-widest text-[10px]" />
+                <x-mary-menu-separator title="Sitio Web" />
 
-                <x-mary-menu-item title="Hero Slider" icon="o-photo" link="/admin/slides"
-                    class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl" />
+                <x-mary-menu-item title="Hero Slider" icon="o-photo" link="/admin/slides" />
 
-                <x-mary-menu-separator title="Sistema"
-                    class="text-text-muted/50 font-serif uppercase tracking-widest text-[10px]" />
+                <x-mary-menu-separator title="Sistema" />
 
-                <x-mary-menu-item title="Usuarios" icon="o-users" link="/admin/users"
-                    class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl">
+                <x-mary-menu-item title="Usuarios" icon="o-users" link="/admin/users">
                     <x-slot:actions>
                         @php
                             $pendingUsers = \App\Models\User::pending()->count();
                         @endphp
                         @if($pendingUsers > 0)
-                            <div class="badge badge-sm bg-error text-white border-0 animate-pulse">
+                            <div class="badge badge-sm bg-error text-white border-0">
                                 {{ $pendingUsers }}
                             </div>
                         @endif
                     </x-slot:actions>
                 </x-mary-menu-item>
-                <x-mary-menu-item title="Ir al Sitio" icon="o-arrow-top-right-on-square" link="/"
-                    class="hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-xl" />
+                <x-mary-menu-item title="Ir al Sitio" icon="o-arrow-top-right-on-square" link="/" />
 
             </x-mary-menu>
         </x-slot:sidebar>
