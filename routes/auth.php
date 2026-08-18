@@ -23,6 +23,7 @@ use App\Livewire\Actions\Logout;
 Route::middleware('auth')->group(function () {
     Route::get('logout', function (Logout $logout) {
         $logout();
+
         return redirect('/');
     })->name('logout');
 

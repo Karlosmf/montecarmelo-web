@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Product;
-use App\Models\Order;
 use App\Events\OrderCreated;
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 
@@ -20,7 +20,7 @@ class CartService
         }
 
         // Validar tipo de unidad válido
-        if (!in_array($unit, ['kg', 'unit', 'pack'], true)) {
+        if (! in_array($unit, ['kg', 'unit', 'pack'], true)) {
             throw new \InvalidArgumentException('Tipo de unidad inválido');
         }
 
@@ -29,7 +29,7 @@ class CartService
             ->where('is_active', true)
             ->first();
 
-        if (!$product) {
+        if (! $product) {
             throw new \Exception('Producto no disponible');
         }
 
@@ -68,7 +68,7 @@ class CartService
         return collect($cart)->map(function ($item) use ($products) {
             $productId = $item['id'];
 
-            if (!$products->has($productId)) {
+            if (! $products->has($productId)) {
                 return null;
             }
 
@@ -134,14 +134,15 @@ class CartService
         if ($order) {
             $items = collect($order->items);
             $totalVal = number_format($order->total / 100, 2);
-            $orderId = "#" . str_pad($order->id, 4, '0', STR_PAD_LEFT);
+            $orderId = '#'.str_pad($order->id, 4, '0', STR_PAD_LEFT);
         } else {
             // Fallback for direct link without order
             $items = $this->getDetails();
-            if ($items->isEmpty())
+            if ($items->isEmpty()) {
                 return '';
+            }
             $totalVal = number_format($this->total() / 100, 2);
-            $orderId = "N/A";
+            $orderId = 'N/A';
         }
 
         $message = "Hola Monte Carmelo, mi pedido {$orderId}:\n";
@@ -154,7 +155,7 @@ class CartService
 
             $qtyDisplay = $qty;
             if ($unit === 'kg') {
-                $qtyDisplay = $qty . 'g';
+                $qtyDisplay = $qty.'g';
             } elseif ($unit === 'unit') {
                 $qtyDisplay .= ' un.';
             }
@@ -166,7 +167,7 @@ class CartService
 
         $phoneNumber = config('montecarmelo.contact.whatsapp_number');
 
-        return "https://wa.me/{$phoneNumber}?text=" . urlencode($message);
+        return "https://wa.me/{$phoneNumber}?text=".urlencode($message);
     }
 
     protected function calculateSubtotal(int $price, int $qty, string $unitType): int

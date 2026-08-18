@@ -22,7 +22,7 @@ class ProductFactory extends Factory
             'description' => $this->faker->sentence(),
             'price' => $this->faker->numberBetween(100, 10000), // cents
             'unit_type' => $this->faker->randomElement(['kg', 'unit', 'pack']),
-            'category' => $this->faker->word(),
+            'category_id' => null,
             'image_path' => null,
             'is_active' => true,
             'is_featured' => false,

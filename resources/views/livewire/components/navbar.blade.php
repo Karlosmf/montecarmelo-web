@@ -24,52 +24,57 @@ new class extends Component {
     }
 }; ?>
 
-<nav class="absolute top-0 w-full z-50 bg-gradient-to-b from-black/80 to-transparent py-4">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-        
-        {{-- Mobile: Drawer Toggle & Logo Centered (Approximated by flex behavior) --}}
-        <div class="flex items-center lg:hidden w-full justify-between">
-            <label for="main-drawer" class="text-white">
-                <x-mary-icon name="o-bars-3" class="w-6 h-6 cursor-pointer" />
-            </label>
-            <a href="/" class="text-2xl font-serif font-bold text-primary tracking-widest uppercase">
-                Monte Carmelo
-            </a>
-            <div class="relative" wire:click="openCart">
-                 @if($cartCount > 0)
-                    <span class="absolute -top-1 -right-1 badge badge-primary badge-xs w-4 h-4 p-0 flex items-center justify-center text-[10px]">{{ $cartCount }}</span> 
-                @endif
-                <x-mary-icon name="o-shopping-bag" class="w-6 h-6 text-white" />
-            </div>
-        </div>
+<nav data-navbar class="fixed top-0 w-full z-50 bg-gradient-to-b from-black/85 via-black/55 to-black/20 transition-all duration-500">
+    <div class="container mx-auto px-4 lg:px-8">
+        <div class="flex items-center justify-between gap-6 h-16 lg:h-20">
 
-        {{-- Desktop: Logo Left --}}
-        <div class="hidden lg:flex items-center">
-            <a href="/" class="text-3xl font-serif font-bold text-primary tracking-widest uppercase">
-                Monte Carmelo
-            </a>
-        </div>
+            {{-- Mobile: Hamburger + Logo centrado + Carrito --}}
+            <div class="flex lg:hidden items-center justify-between w-full">
+                <label for="main-drawer" class="text-text-main hover:text-primary transition-colors cursor-pointer" aria-label="Abrir menú">
+                    <i class="ph ph-list text-2xl leading-none" aria-hidden="true"></i>
+                </label>
 
-        {{-- Desktop: Links Right --}}
-        <div class="hidden lg:flex items-center gap-8">
-            <a href="/" class="nav-link">Inicio</a>
-            <a href="/products" class="nav-link">Productos</a>
-            <a href="#" class="nav-link">Nosotros</a>
-            <a href="/contact" class="nav-link">Contacto</a>
-        </div>
+                <x-logo class="h-9" />
 
-        {{-- Actions (Desktop only shown here for cleaner mobile, or adapted) --}}
-        <div class="hidden lg:flex items-center gap-4 text-white">
-            <x-mary-button icon="o-magnifying-glass" class="btn-ghost btn-sm btn-circle text-white hover:text-primary" />
-            
-             <div class="indicator cursor-pointer" wire:click="openCart">
-                @if($cartCount > 0)
-                    <span class="indicator-item badge badge-primary badge-xs mr-2 mt-2">{{ $cartCount }}</span> 
-                @endif
-                <x-mary-button icon="o-shopping-bag" class="btn-ghost btn-sm btn-circle text-white hover:text-primary" />
+                <div class="relative cursor-pointer text-text-main hover:text-primary transition-colors" wire:click="openCart" aria-label="Abrir carrito">
+                    @if($cartCount > 0)
+                        <span class="cart-badge">{{ $cartCount }}</span>
+                    @endif
+                    <i class="ph ph-shopping-bag text-2xl leading-none" aria-hidden="true"></i>
+                </div>
             </div>
 
-            <x-mary-button icon="o-user" link="/admin/dashboard" class="btn-ghost btn-sm btn-circle text-white hover:text-primary" />
+            {{-- Desktop: Logo a la izquierda --}}
+            <x-logo class="hidden lg:block h-11" />
+
+            {{-- Desktop: Navegación centrada --}}
+            <nav class="hidden lg:flex flex-1 justify-center" aria-label="Principal">
+                <ul class="flex items-center gap-10">
+                    <li><a href="/" wire:navigate class="nav-link">Inicio</a></li>
+                    <li><a href="/products" wire:navigate class="nav-link">Productos</a></li>
+                    <li><a href="/#nuestra-historia" wire:navigate class="nav-link">Nosotros</a></li>
+                    <li><a href="/contact" wire:navigate class="nav-link">Contacto</a></li>
+                </ul>
+            </nav>
+
+            {{-- Desktop: Iconos a la derecha --}}
+            <div class="hidden lg:flex items-center gap-6 text-text-main">
+                <a href="/products" aria-label="Buscar productos" class="hover:text-primary transition-colors duration-300">
+                    <i class="ph ph-magnifying-glass text-xl leading-none" aria-hidden="true"></i>
+                </a>
+
+                <div class="relative indicator cursor-pointer hover:text-primary transition-colors duration-300" wire:click="openCart" aria-label="Abrir carrito">
+                    @if($cartCount > 0)
+                        <span class="cart-badge">{{ $cartCount }}</span>
+                    @endif
+                    <i class="ph ph-shopping-bag text-xl leading-none" aria-hidden="true"></i>
+                </div>
+
+                <a href="/admin/dashboard" aria-label="Administración" class="hover:text-primary transition-colors duration-300">
+                    <i class="ph ph-user text-xl leading-none" aria-hidden="true"></i>
+                </a>
+            </div>
+
         </div>
     </div>
 </nav>

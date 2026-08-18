@@ -20,7 +20,7 @@
             class="bg-transparent border-0 border-b border-white/20 text-xs uppercase tracking-[0.2em] text-text-muted focus:outline-none focus:border-primary w-full sm:w-auto py-2 cursor-pointer transition-colors">
             <option value="">Todas las Categorías</option>
             @foreach($categories as $category)
-                <option value="{{ $category->id }}" class="bg-[#0a0a0a]">{{ $category->name }}</option>
+                <option value="{{ $category->id }}" class="bg-background-main text-text-main">{{ $category->name }}</option>
             @endforeach
         </select>
     </div>

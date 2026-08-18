@@ -21,6 +21,10 @@ class Product extends Model
         'image_path',
         'is_active',
         'is_featured',
+        'short_description',
+        'curing_days',
+        'origin',
+        'format',
     ];
 
     protected $casts = [

@@ -6,6 +6,7 @@ use Livewire\Volt\Volt;
 Volt::route('/', 'home');
 Volt::route('/products', 'catalog.index');
 Volt::route('/contact', 'contact');
+Volt::route('/products/{slug}', 'catalog.show');
 
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
@@ -16,7 +17,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Volt::route('/products', 'admin.products')->name('admin.products');
     Volt::route('/orders', 'admin.orders.index')->name('admin.orders');
     Volt::route('/slides', 'admin.slides.index')->name('admin.slides');
+    Volt::route('/master-picks', 'admin.master-picks.index')->name('admin.master-picks');
+    Volt::route('/gallery', 'admin.gallery.index')->name('admin.gallery');
     // Future routes will go here
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

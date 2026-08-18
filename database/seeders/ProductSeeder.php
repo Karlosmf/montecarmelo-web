@@ -28,11 +28,12 @@ class ProductSeeder extends Seeder
         Schema::enableForeignKeyConstraints();
 
         // 1. Categories
-        // "Asegurarse de que las Categorías Embutidos, Quesos y Picadas existan primero"
+        // "Asegurarse de que las Categorías Embutidos, Quesos, Picadas y Cuchillería existan primero"
         $categoriesData = [
             ['name' => 'Embutidos', 'slug' => 'embutidos', 'color' => 'bg-red-100 text-red-800'],
             ['name' => 'Quesos', 'slug' => 'quesos', 'color' => 'bg-yellow-100 text-yellow-800'],
             ['name' => 'Picadas', 'slug' => 'picadas', 'color' => 'bg-orange-100 text-orange-800'],
+            ['name' => 'Cuchillería', 'slug' => 'cuchilleria', 'color' => 'bg-stone-200 text-stone-800'],
         ];
 
         $categories = collect();
@@ -62,6 +63,10 @@ class ProductSeeder extends Seeder
                 'unit_type' => 'kg',
                 'image_path' => 'products/bondiola-feteada.jpg',
                 'category_slug' => 'embutidos',
+                'short_description' => 'Curada con especias naturales, sabor intenso y textura mantecosa.',
+                'curing_days' => 45,
+                'origin' => 'Reconquista, Santa Fe',
+                'format' => 'Al vacío / Feteada',
             ],
             [
                 'name' => 'Lomo de Cerdo a las Hierbas',
@@ -70,6 +75,10 @@ class ProductSeeder extends Seeder
                 'unit_type' => 'kg',
                 'image_path' => 'products/lomo-cerdo.jpg',
                 'category_slug' => 'embutidos',
+                'short_description' => 'Magro, suave y aromático, curado con hierbas de campo.',
+                'curing_days' => 35,
+                'origin' => 'Reconquista, Santa Fe',
+                'format' => 'Pieza entera / Al corte',
             ],
             [
                 'name' => 'Jamón Crudo Reserva',
@@ -78,6 +87,10 @@ class ProductSeeder extends Seeder
                 'unit_type' => 'kg',
                 'image_path' => 'products/jamon-crudo.jpg',
                 'category_slug' => 'embutidos',
+                'short_description' => 'Estacionamiento prolongado, el punto justo de sal y dulzura.',
+                'curing_days' => 180,
+                'origin' => 'Reconquista, Santa Fe',
+                'format' => 'Feteado con separadores',
             ],
             [
                 'name' => 'Salame Picado Grueso (Tipo Casero)',
@@ -86,6 +99,10 @@ class ProductSeeder extends Seeder
                 'unit_type' => 'unit',
                 'image_path' => 'products/salame-picado-grueso.jpg',
                 'category_slug' => 'embutidos',
+                'short_description' => 'Receta tradicional, tocino en cubos y pimienta en grano, atado a mano.',
+                'curing_days' => 90,
+                'origin' => 'Reconquista, Santa Fe',
+                'format' => 'Unidad / Atado a mano',
             ],
 
             // Categoría: Quesos (De Terceros)
@@ -96,6 +113,10 @@ class ProductSeeder extends Seeder
                 'unit_type' => 'kg',
                 'image_path' => 'products/queso-pategras.jpg',
                 'category_slug' => 'quesos',
+                'short_description' => 'Pasta semidura, sabor levemente picante, ideal para picadas.',
+                'curing_days' => 60,
+                'origin' => 'Santa Fe, Argentina',
+                'format' => 'Trozado / Al corte',
             ],
 
             // Categoría: Picadas
@@ -106,6 +127,48 @@ class ProductSeeder extends Seeder
                 'unit_type' => 'unit',
                 'image_path' => 'products/picada-premium.jpg',
                 'category_slug' => 'picadas',
+                'short_description' => 'Selección de fiambres, quesos, aceitunas y pan de campo para 4 personas.',
+                'curing_days' => null,
+                'origin' => 'Reconquista, Santa Fe',
+                'format' => 'Tabla para 4 personas',
+            ],
+
+            // Categoría: Cuchillería
+            [
+                'name' => 'Cuchillo Cocinero Premium',
+                'description' => 'Hoja de acero inoxidable forjada y mango de madera de fresno. El compañero de trabajo ideal para cortar carnes, embutidos y quesos con precisión.',
+                'price' => 140000,
+                'unit_type' => 'unit',
+                'image_path' => 'products/login-background.jpg',
+                'category_slug' => 'cuchilleria',
+                'short_description' => 'Acero inoxidable forjado y mango de fresno, precisión en cada corte.',
+                'curing_days' => null,
+                'origin' => 'Fabricación nacional',
+                'format' => 'Unidad',
+            ],
+            [
+                'name' => 'Cuchillo Jamonero Trinchante',
+                'description' => 'Hoja flexible de 25 cm diseñada para realizar cortes finos y parejos en jamones crudos y cocidos. Mango ergonómico antideslizante.',
+                'price' => 185000,
+                'unit_type' => 'unit',
+                'image_path' => 'products/login-background.jpg',
+                'category_slug' => 'cuchilleria',
+                'short_description' => 'Hoja flexible de 25 cm para cortes finos en jamones.',
+                'curing_days' => null,
+                'origin' => 'Fabricación nacional',
+                'format' => 'Unidad',
+            ],
+            [
+                'name' => 'Set de Cuchillos Artesanal',
+                'description' => 'Juego de tres cuchillos (cocinero, jamonero y trinchante) con vaina de cuero y pie de apoyo en madera. El regalo definitivo para amantes de la parrilla y la charcutería.',
+                'price' => 420000,
+                'unit_type' => 'unit',
+                'image_path' => 'products/login-background.jpg',
+                'category_slug' => 'cuchilleria',
+                'short_description' => 'Tres cuchillos con vaina de cuero y pie de madera.',
+                'curing_days' => null,
+                'origin' => 'Fabricación nacional',
+                'format' => 'Set / Estuche',
             ],
         ];
 

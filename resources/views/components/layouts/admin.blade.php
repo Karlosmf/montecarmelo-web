@@ -42,18 +42,10 @@
 
             {{-- BRAND LOGO --}}
             <div class="p-6 pt-10 hidden lg:block">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
-                        <x-mary-icon name="o-sparkles" class="w-6 h-6" />
-                    </div>
-                    <div>
-                        <div class="font-bold text-lg leading-none uppercase">
-                            Monte Carmelo
-                        </div>
-                        <div class="text-xs text-base-content/60 uppercase tracking-widest font-bold">Control
-                            Panel</div>
-                    </div>
-                </div>
+                <a href="/" wire:navigate class="flex flex-col w-fit mx-auto" aria-label="Monte Carmelo - Control Panel">
+                    <x-logo class="h-12" />
+                    <span class="text-[10px] text-base-content/50 uppercase tracking-widest font-bold leading-none">Control Panel</span>
+                </a>
             </div>
 
             {{-- MENU --}}
@@ -94,6 +86,8 @@
                 <x-mary-menu-separator title="Sitio Web" />
 
                 <x-mary-menu-item title="Hero Slider" icon="o-photo" link="/admin/slides" />
+                <x-mary-menu-item title="Selección del Maestro" icon="o-sparkles" link="/admin/master-picks" />
+                <x-mary-menu-item title="Galería" icon="o-photo" link="{{ route('admin.gallery') }}" />
 
                 <x-mary-menu-separator title="Sistema" />
 

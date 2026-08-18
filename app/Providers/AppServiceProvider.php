@@ -12,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton('cart', function ($app) {
-            return new \App\Services\CartService();
+            return new \App\Services\CartService;
         });
     }
 
@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->app->bind('settings', fn () => new \App\Support\Settings);
     }
 }

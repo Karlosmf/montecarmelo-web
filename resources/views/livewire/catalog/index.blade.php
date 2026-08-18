@@ -46,7 +46,8 @@ with(fn() => [
 @section('meta_description', 'Explora nuestra colección exclusiva de charcutería, quesos y vinos premium.')
 
 
-<div class="min-h-screen pt-24 relative">
+<div class="min-h-screen pt-24 relative overflow-hidden">
+    <div class="section-glow w-[55vw] h-[55vw] -top-20 left-1/2 -translate-x-1/2 opacity-50"></div>
 
     {{-- HEADER WITH FILTERS --}}
     <x-catalog.header :categories="$categories" />

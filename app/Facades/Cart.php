@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static void clear()
  * @method static int count()
  * @method static string getWhatsAppLink()
- * 
+ *
  * @see \App\Services\CartService
  */
 class Cart extends Facade

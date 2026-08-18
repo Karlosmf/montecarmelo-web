@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            
+
             // Price in cents to avoid float errors.
             $table->integer('price');
-            
+
             $table->enum('unit_type', ['kg', 'unit', 'pack']);
             $table->string('category'); // Keep it simple as string for now.
             $table->string('image_path')->nullable();

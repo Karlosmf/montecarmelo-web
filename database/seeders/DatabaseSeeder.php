@@ -26,7 +26,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             SlideSeeder::class,
-            // ProductSeeder::class,
+            ProductSeeder::class,
+            SettingsSeeder::class,
+            GalleryImageSeeder::class,
+            MasterPickSeeder::class,
         ]);
     }
 }

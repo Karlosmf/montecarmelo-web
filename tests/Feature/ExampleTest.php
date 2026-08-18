@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
@@ -15,10 +15,9 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
 
         if ($response->status() !== 200) {
-             dump($response->exception?->getMessage());
+            dump($response->exception?->getMessage());
         }
 
         $response->assertStatus(200);
     }
 }
-

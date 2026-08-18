@@ -16,7 +16,7 @@ class CartServiceTest extends TestCase
         $product = Product::factory()->create([
             'name' => 'Manzanas',
             'price' => 1000, // $10.00
-            'unit_type' => 'kg'
+            'unit_type' => 'kg',
         ]);
 
         Cart::add($product->id, 500, 'kg'); // 500g
@@ -30,13 +30,13 @@ class CartServiceTest extends TestCase
         $apple = Product::factory()->create([
             'name' => 'Manzanas',
             'price' => 1000, // $10.00 per kg
-            'unit_type' => 'kg'
+            'unit_type' => 'kg',
         ]);
 
         $water = Product::factory()->create([
             'name' => 'Agua',
             'price' => 500, // $5.00 per unit
-            'unit_type' => 'unit'
+            'unit_type' => 'unit',
         ]);
 
         Cart::add($apple->id, 500, 'kg'); // 500g = 0.5kg -> $5.00 (500 cents)
@@ -45,7 +45,7 @@ class CartServiceTest extends TestCase
         $items = Cart::getDetails();
 
         $this->assertCount(2, $items);
-        
+
         $appleItem = $items->firstWhere('id', $apple->id);
         $this->assertEquals(500, $appleItem->subtotal); // 500 cents
 
@@ -59,9 +59,9 @@ class CartServiceTest extends TestCase
     {
         $product = Product::factory()->create();
         Cart::add($product->id, 1, 'unit');
-        
+
         Cart::remove($product->id);
-        
+
         $this->assertEquals(0, Cart::count());
     }
 
@@ -76,7 +76,7 @@ class CartServiceTest extends TestCase
 
         $link = Cart::getWhatsAppLink();
 
-        $this->assertStringContainsString('https://wa.me/5491112345678', $link);
+        $this->assertStringContainsString('https://wa.me/5493482535220', $link);
         $this->assertStringContainsString('TestProduct', urldecode($link));
     }
 }
